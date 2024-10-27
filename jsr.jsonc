@@ -4,6 +4,7 @@
 	"version": "0.1.1",
 	"exports": {
 		"./delimitation": "./delimitation.ts",
+		"./executable": "./executable.ts",
 		"./env": "./env.ts",
 		"./path": "./path.ts",
 		"./pathext": "./pathext.ts",
