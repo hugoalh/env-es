@@ -1,4 +1,4 @@
-import { assert } from "STD/assert/assert";
+import { ok } from "node:assert";
 import {
 	getAllExecutable,
 	getExecutable
@@ -21,5 +21,5 @@ Deno.test("Get `git`", {
 		sys: ["gid", "uid"]
 	}
 }, async () => {
-	assert(await getExecutable("git"));
+	ok(await getExecutable("git"));
 });

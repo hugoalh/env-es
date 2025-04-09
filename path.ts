@@ -1,4 +1,4 @@
-import { isAbsolute as isPathAbsolute } from "jsr:@std/path@^1.0.8/is-absolute";
+import { isAbsolute as isPathAbsolute } from "node:path";
 import { envDelimitation } from "./delimitation.ts";
 function assertValuesAbsolutePath(...values: string[]): void {
 	values.forEach((value: string): void => {

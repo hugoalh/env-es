@@ -6,7 +6,7 @@
 [![JSR: @hugoalh/env](https://img.shields.io/jsr/v/@hugoalh/env?label=@hugoalh/env&labelColor=F7DF1E&logo=jsr&logoColor=000000&style=flat "JSR: @hugoalh/env")](https://jsr.io/@hugoalh/env)
 [![NPM: @hugoalh/env](https://img.shields.io/npm/v/@hugoalh/env?label=@hugoalh/env&labelColor=CB3837&logo=npm&logoColor=ffffff&style=flat "NPM: @hugoalh/env")](https://www.npmjs.com/package/@hugoalh/env)
 
-An ES (JavaScript & TypeScript) module for enhanced environment variables operation.
+An ECMAScript (JavaScript & TypeScript) module for enhanced environment variables operation.
 
 ## 🔰 Begin
 
