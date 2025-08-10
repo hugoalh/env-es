@@ -1,13 +1,4 @@
 export {
-	delimiter,
-	delimiterColon,
-	delimiterSemiColon,
-	envDelimitation,
-	getEnvWithDelimitation,
-	setEnvWithDelimitation,
-	type EnvDelimitation
-} from "./delimitation.ts";
-export {
 	getAllExecutable,
 	getAllExecutableSync,
 	getExecutable,
@@ -19,25 +10,14 @@ export {
 	type IsExecutablePathOptions
 } from "./executable.ts";
 export {
-	deleteEnv,
+	delimiterColon,
+	delimiterCurrent,
+	delimiterSemiColon,
 	env,
-	getAllEnv,
-	getEnv,
-	hasEnv,
-	setEnv,
-	type Env
+	type Env,
+	type EnvDelimitation,
+	type EnvGeneral,
+	type EnvPath,
+	type EnvPathExt,
+	type EnvironmentVariablesValueDelimiter
 } from "./env.ts";
-export {
-	addEnvPath,
-	deleteEnvPath,
-	envPath,
-	getEnvPath,
-	type EnvPath
-} from "./path.ts";
-export {
-	addEnvPathExt,
-	deleteEnvPathExt,
-	envPathExt,
-	getEnvPathExt,
-	type EnvPathExt
-} from "./pathext.ts";

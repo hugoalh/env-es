@@ -3,9 +3,8 @@ import {
 	isAbsolute as isPathAbsolute,
 	join as joinPath
 } from "node:path";
-import { isOSWindows } from "./_info.ts";
-import { getEnvPath } from "./path.ts";
-import { getEnvPathExt } from "./pathext.ts";
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.1.0/mod.ts";
+import { env } from "./env.ts";
 export interface GetExecutableOptions {
 	/**
 	 * Whether to include the entries in the working directory.
@@ -43,12 +42,12 @@ export interface ExecutableEntry {
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - Environment Variable \[Deno: `env`\]
+ * > - **Environment Variable (Deno: `env`):**
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+ * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
  * >   - *Resources*
- * > - System Info \[Deno: `sys`\]
+ * > - **System Info (Deno: `sys`):**
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {GetExecutableOptions} [options={}] Options.
@@ -60,8 +59,8 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 		filters = []
 	} = options;
 	const yielded: Set<string> = new Set<string>();
-	const envPathExts: string[] | null = getEnvPathExt();
-	const envPaths: string[] = getEnvPath();
+	const envPathExts: string[] | null = env.pathext.get();
+	const envPaths: string[] = env.path.get();
 	if (typeof cwd === "string") {
 		envPaths.unshift(cwd);
 	} else if (cwd) {
@@ -83,7 +82,7 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 				} catch {
 					continue;
 				}
-				const name: string = isOSWindows ? basename.slice(0, basename.length - getPathExtname(basename).length) : basename;
+				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - getPathExtname(basename).length) : basename;
 				if (
 					filters.length === 0 ||
 					(filters.length > 0 && filters.some((filter: string | RegExp): boolean => {
@@ -123,12 +122,12 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - Environment Variable \[Deno: `env`\]
+ * > - **Environment Variable (Deno: `env`):**
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+ * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
  * >   - *Resources*
- * > - System Info \[Deno: `sys`\]
+ * > - **System Info (Deno: `sys`):**
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {GetExecutableOptions} [options={}] Options.
@@ -140,8 +139,8 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 		filters = []
 	} = options;
 	const yielded: Set<string> = new Set<string>();
-	const envPathExts: string[] | null = getEnvPathExt();
-	const envPaths: string[] = getEnvPath();
+	const envPathExts: string[] | null = env.pathext.get();
+	const envPaths: string[] = env.path.get();
 	if (typeof cwd === "string") {
 		envPaths.unshift(cwd);
 	} else if (cwd) {
@@ -163,7 +162,7 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 				} catch {
 					continue;
 				}
-				const name: string = isOSWindows ? basename.slice(0, basename.length - getPathExtname(basename).length) : basename;
+				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - getPathExtname(basename).length) : basename;
 				if (
 					filters.length === 0 ||
 					(filters.length > 0 && filters.some((filter: string | RegExp): boolean => {
@@ -203,12 +202,12 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - Environment Variable \[Deno: `env`\]
+ * > - **Environment Variable (Deno: `env`):**
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+ * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
  * >   - *Resources*
- * > - System Info \[Deno: `sys`\]
+ * > - **System Info (Deno: `sys`):**
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {Omit<GetExecutableOptions, "filter">} [options={}] Options.
@@ -228,12 +227,12 @@ export async function getExecutable(specifier: string, options: Omit<GetExecutab
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - Environment Variable \[Deno: `env`\]
+ * > - **Environment Variable (Deno: `env`):**
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+ * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
  * >   - *Resources*
- * > - System Info \[Deno: `sys`\]
+ * > - **System Info (Deno: `sys`):**
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {Omit<GetExecutableOptions, "filter">} [options={}] Options.
@@ -312,8 +311,8 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 		if (!stat.isFile) {
 			return false;
 		}
-		if (isOSWindows) {
-			return isExecutablePathInternalWindows(path, pathExts ?? getEnvPathExt()!);
+		if (systemName === "windows") {
+			return isExecutablePathInternalWindows(path, pathExts ?? env.pathext.get()!);
 		}
 		return isExecutablePathInternalPOSIX(stat, options);
 	} catch (error) {
@@ -330,8 +329,8 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
 		if (!stat.isFile) {
 			return false;
 		}
-		if (isOSWindows) {
-			return isExecutablePathInternalWindows(path, pathExts ?? getEnvPathExt()!);
+		if (systemName === "windows") {
+			return isExecutablePathInternalWindows(path, pathExts ?? env.pathext.get()!);
 		}
 		return isExecutablePathInternalPOSIX(stat, options);
 	} catch (error) {
@@ -346,11 +345,11 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - Environment Variable \[Deno: `env`\]
+ * > - **Environment Variable (Deno: `env`):**
  * >   - `PATHEXT` (Windows Platforms)
- * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+ * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
  * >   - *Resources*
- * > - System Info \[Deno: `sys`\]
+ * > - **System Info (Deno: `sys`):**
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {string} path Path.
@@ -365,11 +364,11 @@ export function isExecutablePath(path: string, options: IsExecutablePathOptions 
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - Environment Variable \[Deno: `env`\]
+ * > - **Environment Variable (Deno: `env`):**
  * >   - `PATHEXT` (Windows Platforms)
- * > - File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+ * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
  * >   - *Resources*
- * > - System Info \[Deno: `sys`\]
+ * > - **System Info (Deno: `sys`):**
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {string} path Path.

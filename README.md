@@ -12,11 +12,11 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
 
 ### 🎯 Targets
 
-|  | **Remote** | **JSR** | **NPM** |
-|:--|:--|:--|:--|
+| **Targets** | **Remote** | **JSR** | **NPM** |
+|:--|:-:|:-:|:-:|
 | **[Bun](https://bun.sh/)** >= v1.1.0 | ❌ | ❓ | ✔️ |
-| **[Deno](https://deno.land/)** >= v1.42.0 | ✔️ | ✔️ | ✔️ |
-| **[NodeJS](https://nodejs.org/)** >= v16.13.0 | ❌ | ❓ | ✔️ |
+| **[Deno](https://deno.land/)** >= v2.1.0 | ✔️ | ✔️ | ✔️ |
+| **[NodeJS](https://nodejs.org/)** >= v20.9.0 | ❌ | ❓ | ✔️ |
 
 > [!NOTE]
 > - It is possible to use this module in other methods/ways which not listed in here, however those methods/ways are not officially supported, and should beware maybe cause security issues.
@@ -49,13 +49,13 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
 
 ### 🛡️ Runtime Permissions
 
-- Environment Variable \[Deno: `env`\]
+- **Environment Variable (Deno: `env`):**
   - `PATH` (Optional)
   - `PATHEXT` (Optional, Windows Platforms)
   - *Resources*
-- File System - Read \[Deno: `read`; NodeJS (>= v20.9.0) 🧪: `fs-read`\]
+- **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
   - *Resources* (Optional)
-- System Info \[Deno: `sys`\]
+- **System Info (Deno: `sys`):**
   - `gid` (Optional, POSIX/UNIX Platforms)
   - `uid` (Optional, POSIX/UNIX Platforms)
 
@@ -65,18 +65,25 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
   const env: Env;
   ```
 - ```ts
-  const envPath: EnvPath;
+  interface Env extends EnvGeneral {
+    delimitation: EnvDelimitation;
+    path: EnvPath;
+    pathext: EnvPathExt;
+  }
   ```
 - ```ts
-  const envPathExt: EnvPathExt;
-  ```
-- ```ts
-  interface Env {
+  interface EnvGeneral {
     delete(key: string): void;
     get(key: string): string | undefined;
-    getAll(): { [key: string]: string; };
+    getAll(): Record<string, string>;
     has(key: string): boolean;
     set(key: string, value: string): void;
+  }
+  ```
+- ```ts
+  interface EnvDelimitation {
+    get(key: string): string[];
+    set(key: string, values: readonly string[]): void;
   }
   ```
 - ```ts

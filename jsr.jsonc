@@ -1,13 +1,10 @@
 {
 	"$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
 	"name": "@hugoalh/env",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"exports": {
-		"./delimitation": "./delimitation.ts",
 		"./executable": "./executable.ts",
 		"./env": "./env.ts",
-		"./path": "./path.ts",
-		"./pathext": "./pathext.ts",
 		".": "./mod.ts"
 	},
 	"imports": {
