@@ -11,6 +11,12 @@ await invokeDenoNodeJSTransformer({
 	entrypoints: configJSR.getExports(),
 	fixInjectedImports: true,
 	generateDeclarationMap: true,
+	mappings: {
+		"https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.1.0/mod.ts": {
+			name: "@hugoalh/runtime-info",
+			version: "^0.1.0"
+		}
+	},
 	metadata: {
 		name: configJSR.getName(),
 		version: configJSR.getVersion(),
