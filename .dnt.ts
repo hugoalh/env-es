@@ -12,9 +12,9 @@ await invokeDenoNodeJSTransformer({
 	fixInjectedImports: true,
 	generateDeclarationMap: true,
 	mappings: {
-		"https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.1.0/mod.ts": {
+		"https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.2.0/mod.ts": {
 			name: "@hugoalh/runtime-info",
-			version: "^0.1.0"
+			version: "^0.2.0"
 		}
 	},
 	metadata: {

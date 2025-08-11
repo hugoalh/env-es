@@ -3,7 +3,7 @@ import {
 	isAbsolute as isPathAbsolute,
 	join as joinPath
 } from "node:path";
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.1.0/mod.ts";
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.2.0/mod.ts";
 import { env } from "./env.ts";
 export interface GetExecutableOptions {
 	/**
@@ -298,10 +298,10 @@ function isExecutablePathInternalPOSIX(stat: Deno.FileInfo, options: IsExecutabl
 	);
 }
 function isExecutablePathInternalWindows(path: string, pathExts: string[]): boolean {
-	const pathLowerCase: string = path.toLowerCase();
+	const pathFmt: string = path.toUpperCase();
 	return pathExts.some((pathExt: string): boolean => {
-		const pathExtLowerCase: string = pathExt.toLowerCase();
-		return (pathLowerCase !== pathExtLowerCase && pathLowerCase.endsWith(pathExtLowerCase));
+		const pathExtFmt: string = pathExt.toUpperCase();
+		return (pathFmt !== pathExtFmt && pathFmt.endsWith(pathExtFmt));
 	});
 }
 async function isExecutablePathInternal(path: string, options: IsExecutablePathOptions, pathExts?: string[] | null): Promise<boolean> {

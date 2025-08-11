@@ -10,14 +10,10 @@ export {
 	type IsExecutablePathOptions
 } from "./executable.ts";
 export {
-	delimiterColon,
-	delimiterCurrent,
-	delimiterSemiColon,
 	env,
 	type Env,
 	type EnvDelimitation,
 	type EnvGeneral,
 	type EnvPath,
-	type EnvPathExt,
-	type EnvironmentVariablesValueDelimiter
+	type EnvPathExt
 } from "./env.ts";

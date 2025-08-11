@@ -1,5 +1,8 @@
-import { isAbsolute as isPathAbsolute } from "node:path";
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.1.0/mod.ts";
+import {
+	delimiter as envDelimiter,
+	isAbsolute as isPathAbsolute
+} from "node:path";
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.2.0/mod.ts";
 /**
  * Environment variables general interface.
  */
@@ -179,35 +182,27 @@ export interface Env extends EnvGeneral {
 	 */
 	pathext: EnvPathExt;
 }
-const envDelete: EnvGeneral["delete"] = Deno.env.delete;
-const envGet: EnvGeneral["get"] = Deno.env.get;
-const envGetAll: EnvGeneral["getAll"] = Deno.env.toObject;
-const envHas: EnvGeneral["has"] = Deno.env.has;
-const envSet: EnvGeneral["set"] = Deno.env.set;
-/**
- * Environment variables value delimiter character colon, use on the POSIX/UNIX platforms.
- */
-export const delimiterColon = ":" as const;
-/**
- * Environment variables value delimiter character semi colon, use on the Windows platforms.
- */
-export const delimiterSemiColon = ";" as const;
-export type EnvironmentVariablesValueDelimiter =
-	| typeof delimiterColon
-	| typeof delimiterSemiColon;
-/**
- * Environment variables value delimiter character evaluated for the current platform.
- */
-export const delimiterCurrent: EnvironmentVariablesValueDelimiter = (systemName === "windows") ? delimiterSemiColon : delimiterColon;
+const envGeneralDelete: EnvGeneral["delete"] = Deno.env.delete;
+const envGeneralGet: EnvGeneral["get"] = Deno.env.get;
+const envGeneralGetAll: EnvGeneral["getAll"] = Deno.env.toObject;
+const envGeneralHas: EnvGeneral["has"] = Deno.env.has;
+const envGeneralSet: EnvGeneral["set"] = Deno.env.set;
+export const envGeneral: EnvGeneral = Object.freeze({
+	delete: envGeneralDelete,
+	get: envGeneralGet,
+	getAll: envGeneralGetAll,
+	has: envGeneralHas,
+	set: envGeneralSet,
+});
 const envDelimitationGet: EnvDelimitation["get"] = (key: string): string[] => {
-	return (envGet(key) ?? "").split(delimiterCurrent).filter((value: string): boolean => {
+	return (envGeneralGet(key) ?? "").split(envDelimiter).filter((value: string): boolean => {
 		return (value.length > 0);
 	});
 };
 const envDelimitationSet: EnvDelimitation["set"] = (key: string, values: readonly string[]): void => {
-	return envSet(key, values.filter((value: string): boolean => {
+	return envGeneralSet(key, values.filter((value: string): boolean => {
 		return (value.length > 0);
-	}).join(delimiterCurrent));
+	}).join(envDelimiter));
 };
 function assertValuesAbsolutePath(...values: string[]): void {
 	values.forEach((value: string): void => {
@@ -254,7 +249,7 @@ const envPathExtAdd: EnvPathExt["add"] = (...values: readonly string[]): void =>
 	if (systemName === "windows" && values.length > 0) {
 		const result: Set<string> = envDelimitationGetInternal("PATHEXT");
 		for (const value of values) {
-			result.add(value);
+			result.add(value.toUpperCase());
 		}
 		envDelimitationSet("PATHEXT", Array.from(result.values()));
 	}
@@ -264,7 +259,7 @@ const envPathExtDelete: EnvPathExt["delete"] = (...values: readonly string[]): v
 	if (systemName === "windows" && values.length > 0) {
 		const result: Set<string> = envDelimitationGetInternal("PATHEXT");
 		for (const value of values) {
-			result.delete(value);
+			result.delete(value.toUpperCase());
 		}
 		envDelimitationSet("PATHEXT", Array.from(result.values()));
 	}
@@ -277,30 +272,26 @@ const envPathExtGet: EnvPathExt["get"] = (): string[] | null => {
 	if (result.size > 0) {
 		return Array.from(result.values());
 	}
-	return [".com", ".exe", ".bat", ".cmd", ".vbs", ".vbe", ".js", ".jse", ".wsf", ".wsh", ".msc"];
+	return [".COM", ".EXE", ".BAT", ".CMD", ".VBS", ".VBE", ".JS", ".JSE", ".WSF", ".WSH", ".MSC"];
 };
-const envDelimitation: EnvDelimitation = Object.freeze({
+export const envDelimitation: EnvDelimitation = Object.freeze({
 	get: envDelimitationGet,
 	set: envDelimitationSet
 });
-const envPath: EnvPath = Object.freeze({
+export const envPath: EnvPath = Object.freeze({
 	add: envPathAdd,
 	delete: envPathDelete,
 	get: envPathGet
 });
-const envPathExt: EnvPathExt = Object.freeze({
+export const envPathExt: EnvPathExt = Object.freeze({
 	add: envPathExtAdd,
 	delete: envPathExtDelete,
 	get: envPathExtGet
 });
 export const env: Env = Object.freeze({
-	delete: envDelete,
+	...envGeneral,
 	delimitation: envDelimitation,
-	get: envGet,
-	getAll: envGetAll,
-	has: envHas,
 	path: envPath,
-	pathext: envPathExt,
-	set: envSet
+	pathext: envPathExt
 });
 export default env;
