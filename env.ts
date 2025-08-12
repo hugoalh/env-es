@@ -8,18 +8,18 @@ import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-in
  */
 export interface EnvGeneral {
 	/**
-	 * Delete an environment variable.
+	 * Delete the environment variable.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - *Resources*
-	 * @param {string} key Key of the environment variable.
+	 * @param {...string | RegExp} keys Key of the environment variables. Use `string` for exact match, or use `RegExp` for pattern match.
 	 * @returns {void}
 	 */
-	delete(key: string): void;
+	delete(...keys: readonly (string | RegExp)[]): void;
 	/**
-	 * Get the value of an environment variable.
+	 * Get the value of the environment variable.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
@@ -40,18 +40,18 @@ export interface EnvGeneral {
 	 */
 	getAll(): Record<string, string>;
 	/**
-	 * Check whether an environment variable is present.
+	 * Check whether the environment variable is present.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - *Resources*
-	 * @param {string} key Key of the environment variable.
+	 * @param {string | RegExp} key Key of the environment variable. Use `string` for exact match, or use `RegExp` for pattern match.
 	 * @returns {boolean} Determine result.
 	 */
-	has(key: string): boolean;
+	has(key: string | RegExp): boolean;
 	/**
-	 * Set an environment variable.
+	 * Set the environment variable.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
@@ -68,7 +68,79 @@ export interface EnvGeneral {
  */
 export interface EnvDelimitation {
 	/**
-	 * Get the value of an environment variable with inter-handle delimiter.
+	 * Add the value to the environment variable at the end of the list with inter-handle delimiter.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - *Resources*
+	 * @param {string} key Key of the environment variable.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	add(key: string, ...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable at the end of the list with inter-handle delimiter.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - *Resources*
+	 * @param {string} key Key of the environment variable.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtEnd(key: string, ...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable at the specify index of the list with inter-handle delimiter.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - *Resources*
+	 * @param {string} key Key of the environment variable.
+	 * @param {number} index Index of the list.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtIndex(key: string, index: number, ...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable at the start of the list with inter-handle delimiter.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - *Resources*
+	 * @param {string} key Key of the environment variable.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtStart(key: string, ...values: readonly string[]): void;
+	/**
+	 * De-duplicate the values of the environment variable with inter-handle delimiter.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - *Resources*
+	 * @param {string} key Key of the environment variable.
+	 * @returns {void}
+	 */
+	deDuplicate(key: string): void;
+	/**
+	 * Delete the value from the environment variable with inter-handle delimiter.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - *Resources*
+	 * @param {string} key Key of the environment variable.
+	 * @param {...string} values Values that need to delete.
+	 * @returns {void}
+	 */
+	delete(key: string, ...values: readonly string[]): void;
+	/**
+	 * Get the values of the environment variable with inter-handle delimiter.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
@@ -79,7 +151,7 @@ export interface EnvDelimitation {
 	 */
 	get(key: string): string[];
 	/**
-	 * Set the value of an environment variable with inter-handle delimiter.
+	 * Set the values of the environment variable with inter-handle delimiter.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
@@ -96,24 +168,68 @@ export interface EnvDelimitation {
  */
 export interface EnvPath {
 	/**
-	 * Add value to the environment variable `PATH`.
+	 * Add the value to the environment variable `PATH` at the end of the list.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - `PATH`
-	 * @param {...string} values Value that need to add to the environment variable `PATH`.
+	 * @param {...string} values Values that need to add.
 	 * @returns {void}
 	 */
 	add(...values: readonly string[]): void;
 	/**
-	 * Delete value from the environment variable `PATH`.
+	 * Add the value to the environment variable `PATH` at the end of the list.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - `PATH`
-	 * @param {...string} values Value that need to delete from the environment variable `PATH`.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtEnd(...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable `PATH` at the specify index of the list.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATH`
+	 * @param {number} index Index of the list.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtIndex(index: number, ...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable `PATH` at the start of the list.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATH`
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtStart(...values: readonly string[]): void;
+	/**
+	 * De-duplicate the values in the environment variable `PATH`.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATH`
+	 * @returns {void}
+	 */
+	deDuplicate(): void;
+	/**
+	 * Delete the value from the environment variable `PATH`.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATH`
+	 * @param {...string} values Values that need to delete.
 	 * @returns {void}
 	 */
 	delete(...values: readonly string[]): void;
@@ -124,7 +240,7 @@ export interface EnvPath {
 	 * > 
 	 * - **Environment Variable (Deno: `env`):**
 	 * >   - `PATH`
-	 * @returns {string[]} Values of the environment variable `PATH`.
+	 * @returns {string[]}
 	 */
 	get(): string[];
 }
@@ -133,24 +249,68 @@ export interface EnvPath {
  */
 export interface EnvPathExt {
 	/**
-	 * Add value to the environment variable `PATHEXT`.
+	 * Add the value to the environment variable `PATHEXT`; Always ignore for non Windows platforms.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - `PATHEXT` (Windows Platforms)
-	 * @param {...string} values Value that need to add to the environment variable `PATHEXT`.
+	 * @param {...string} values Values that need to add.
 	 * @returns {void}
 	 */
 	add(...values: readonly string[]): void;
 	/**
-	 * Delete value from the environment variable `PATHEXT`.
+	 * Add the value to the environment variable `PATHEXT` at the end of the list; Always ignore for non Windows platforms.
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - `PATHEXT` (Windows Platforms)
-	 * @param {...string} values Value that need to delete from the environment variable `PATHEXT`.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtEnd(...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable `PATHEXT` at the specify index of the list; Always ignore for non Windows platforms.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATHEXT` (Windows Platforms)
+	 * @param {number} index Index of the list.
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtIndex(index: number, ...values: readonly string[]): void;
+	/**
+	 * Add the value to the environment variable `PATHEXT` at the start of the list; Always ignore for non Windows platforms.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATHEXT` (Windows Platforms)
+	 * @param {...string} values Values that need to add.
+	 * @returns {void}
+	 */
+	addAtStart(...values: readonly string[]): void;
+	/**
+	 * De-duplicate the values in the environment variable `PATHEXT`; Always ignore for non Windows platforms.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATHEXT` (Windows Platforms)
+	 * @returns {void}
+	 */
+	deDuplicate(): void;
+	/**
+	 * Delete the value from the environment variable `PATHEXT`; Always ignore for non Windows platforms.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATHEXT` (Windows Platforms)
+	 * @param {...string} values Values that need to delete.
 	 * @returns {void}
 	 */
 	delete(...values: readonly string[]): void;
@@ -161,9 +321,19 @@ export interface EnvPathExt {
 	 * > 
 	 * > - **Environment Variable (Deno: `env`):**
 	 * >   - `PATHEXT` (Windows Platforms)
-	 * @returns {string[] | null} Values of the environment variable `PATHEXT`.
+	 * @returns {string[] | null}
 	 */
 	get(): string[] | null;
+	/**
+	 * Reset the values of the environment variable `PATHEXT` to the default; Always ignore for non Windows platforms.
+	 * 
+	 * > **🛡️ Runtime Permissions**
+	 * > 
+	 * > - **Environment Variable (Deno: `env`):**
+	 * >   - `PATHEXT` (Windows Platforms)
+	 * @returns {void}
+	 */
+	reset(): void;
 }
 /**
  * Environment variables interface.
@@ -182,18 +352,91 @@ export interface Env extends EnvGeneral {
 	 */
 	pathext: EnvPathExt;
 }
-const envGeneralDelete: EnvGeneral["delete"] = Deno.env.delete;
+const envGeneralDelete: EnvGeneral["delete"] = (...keys: readonly (string | RegExp)[]): void => {
+	for (const key of keys.filter((key: string | RegExp): key is string => {
+		return !(key instanceof RegExp);
+	})) {
+		Deno.env.delete(key);
+	}
+	const keysRegExp: readonly RegExp[] = keys.filter((key: string | RegExp): key is RegExp => {
+		return (key instanceof RegExp);
+	});
+	if (keysRegExp.length > 0) {
+		const result: Set<string> = new Set<string>();
+		for (const envKey of Object.keys(envGeneralGetAll())) {
+			for (const keyRegExp of keysRegExp) {
+				if (keyRegExp.test(envKey)) {
+					result.add(envKey);
+					break;
+				}
+			}
+		}
+		for (const key of result.values()) {
+			Deno.env.delete(key);
+		}
+	}
+};
 const envGeneralGet: EnvGeneral["get"] = Deno.env.get;
 const envGeneralGetAll: EnvGeneral["getAll"] = Deno.env.toObject;
-const envGeneralHas: EnvGeneral["has"] = Deno.env.has;
+const envGeneralHas: EnvGeneral["has"] = (key: string | RegExp): boolean => {
+	if (key instanceof RegExp) {
+		for (const envKey of Object.keys(envGeneralGetAll())) {
+			if (key.test(envKey)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	return Deno.env.has(key);
+};
 const envGeneralSet: EnvGeneral["set"] = Deno.env.set;
 export const envGeneral: EnvGeneral = Object.freeze({
 	delete: envGeneralDelete,
 	get: envGeneralGet,
 	getAll: envGeneralGetAll,
 	has: envGeneralHas,
-	set: envGeneralSet,
+	set: envGeneralSet
 });
+function deDuplicate(inputs: readonly string[]): string[] {
+	return Array.from(new Set<string>(inputs));
+}
+const envDelimitationAddAtEnd: EnvDelimitation["addAtEnd"] = (key: string, ...values: readonly string[]): void => {
+	if (values.length > 0) {
+		const result: string[] = envDelimitationGet(key);
+		result.push(...values);
+		envDelimitationSet(key, deDuplicate(result));
+	}
+};
+const envDelimitationAddAtIndex: EnvDelimitation["addAtIndex"] = (key: string, index: number, ...values: readonly string[]): void => {
+	if (values.length > 0) {
+		const result: string[] = envDelimitationGet(key);
+		result.splice(index, 0, ...values);
+		envDelimitationSet(key, deDuplicate(result));
+	}
+};
+const envDelimitationAddAtStart: EnvDelimitation["addAtStart"] = (key: string, ...values: readonly string[]): void => {
+	if (values.length > 0) {
+		const result: string[] = envDelimitationGet(key);
+		result.unshift(...values);
+		envDelimitationSet(key, deDuplicate(result));
+	}
+};
+const envDelimitationAdd: EnvDelimitation["add"] = envDelimitationAddAtEnd;
+const envDelimitationDeDuplicate: EnvDelimitation["deDuplicate"] = (key: string): void => {
+	const original: readonly string[] = envDelimitationGet(key);
+	const result: readonly string[] = deDuplicate(original);
+	if (result.length < original.length) {
+		envDelimitationSet(key, result);
+	}
+};
+const envDelimitationDelete: EnvDelimitation["delete"] = (key: string, ...values: readonly string[]): void => {
+	if (values.length > 0) {
+		const result: readonly string[] = deDuplicate(envDelimitationGet(key)).filter((value: string): boolean => {
+			return !values.includes(value);
+		});
+		envDelimitationSet(key, result);
+	}
+};
 const envDelimitationGet: EnvDelimitation["get"] = (key: string): string[] => {
 	return (envGeneralGet(key) ?? "").split(envDelimiter).filter((value: string): boolean => {
 		return (value.length > 0);
@@ -211,31 +454,28 @@ function assertValuesAbsolutePath(...values: string[]): void {
 		}
 	});
 }
-function envDelimitationGetInternal(key: string): Set<string> {
-	return new Set<string>((envDelimitationGet(key)));
-}
-const envPathAdd: EnvPath["add"] = (...values: readonly string[]): void => {
+const envPathAddAtEnd: EnvPath["addAtEnd"] = (...values: readonly string[]): void => {
 	assertValuesAbsolutePath(...values);
-	if (values.length > 0) {
-		const result: Set<string> = envDelimitationGetInternal("PATH");
-		for (const value of values) {
-			result.add(value);
-		}
-		envDelimitationSet("PATH", Array.from(result.values()));
-	}
+	envDelimitationAddAtEnd("PATH", ...values);
+};
+const envPathAddAtIndex: EnvPath["addAtIndex"] = (index: number, ...values: readonly string[]): void => {
+	assertValuesAbsolutePath(...values);
+	envDelimitationAddAtIndex("PATH", index, ...values);
+};
+const envPathAddAtStart: EnvPath["addAtStart"] = (...values: readonly string[]): void => {
+	assertValuesAbsolutePath(...values);
+	envDelimitationAddAtStart("PATH", ...values);
+};
+const envPathAdd: EnvPath["add"] = envPathAddAtEnd;
+const envPathDeDuplicate: EnvPath["deDuplicate"] = (): void => {
+	envDelimitationDeDuplicate("PATH");
 };
 const envPathDelete: EnvPath["delete"] = (...values: readonly string[]): void => {
 	assertValuesAbsolutePath(...values);
-	if (values.length > 0) {
-		const result: Set<string> = envDelimitationGetInternal("PATH");
-		for (const value of values) {
-			result.delete(value);
-		}
-		envDelimitationSet("PATH", Array.from(result.values()));
-	}
+	envDelimitationDelete("PATH", ...values);
 };
 const envPathGet: EnvPath["get"] = (): string[] => {
-	return Array.from(envDelimitationGetInternal("PATH"));
+	return deDuplicate(envDelimitationGet("PATH"));
 };
 function assertValuesFileExtension(...values: readonly string[]): void {
 	values.forEach((value: string): void => {
@@ -244,49 +484,81 @@ function assertValuesFileExtension(...values: readonly string[]): void {
 		}
 	});
 }
-const envPathExtAdd: EnvPathExt["add"] = (...values: readonly string[]): void => {
+const envPathExtAddAtEnd: EnvPathExt["addAtEnd"] = (...values: readonly string[]): void => {
 	assertValuesFileExtension(...values);
-	if (systemName === "windows" && values.length > 0) {
-		const result: Set<string> = envDelimitationGetInternal("PATHEXT");
-		for (const value of values) {
-			result.add(value.toUpperCase());
-		}
-		envDelimitationSet("PATHEXT", Array.from(result.values()));
+	if (systemName === "windows") {
+		envDelimitationAddAtEnd("PATHEXT", ...values.map((value: string): string => {
+			return value.toUpperCase();
+		}));
+	}
+};
+const envPathExtAddAtIndex: EnvPathExt["addAtIndex"] = (index: number, ...values: readonly string[]): void => {
+	assertValuesFileExtension(...values);
+	if (systemName === "windows") {
+		envDelimitationAddAtIndex("PATHEXT", index, ...values.map((value: string): string => {
+			return value.toUpperCase();
+		}));
+	}
+};
+const envPathExtAddAtStart: EnvPathExt["addAtStart"] = (...values: readonly string[]): void => {
+	assertValuesFileExtension(...values);
+	if (systemName === "windows") {
+		envDelimitationAddAtStart("PATHEXT", ...values.map((value: string): string => {
+			return value.toUpperCase();
+		}));
+	}
+};
+const envPathExtAdd: EnvPathExt["add"] = envPathExtAddAtEnd;
+const envPathExtDeDuplicate: EnvPathExt["deDuplicate"] = (): void => {
+	if (systemName === "windows") {
+		envDelimitationDeDuplicate("PATHEXT");
 	}
 };
 const envPathExtDelete: EnvPathExt["delete"] = (...values: readonly string[]): void => {
 	assertValuesFileExtension(...values);
 	if (systemName === "windows" && values.length > 0) {
-		const result: Set<string> = envDelimitationGetInternal("PATHEXT");
-		for (const value of values) {
-			result.delete(value.toUpperCase());
-		}
-		envDelimitationSet("PATHEXT", Array.from(result.values()));
+		envDelimitationDelete("PATHEXT", ...values.map((value: string): string => {
+			return value.toUpperCase();
+		}));
 	}
 };
 const envPathExtGet: EnvPathExt["get"] = (): string[] | null => {
 	if (systemName !== "windows") {
 		return null;
 	}
-	const result: Set<string> = envDelimitationGetInternal("PATHEXT");
-	if (result.size > 0) {
-		return Array.from(result.values());
-	}
-	return [".COM", ".EXE", ".BAT", ".CMD", ".VBS", ".VBE", ".JS", ".JSE", ".WSF", ".WSH", ".MSC"];
+	return envDelimitationGet("PATHEXT");
+};
+const envPathExtReset: EnvPathExt["reset"] = (): void => {
+	envDelimitationSet("PATHEXT", [".COM", ".EXE", ".BAT", ".CMD", ".VBS", ".VBE", ".JS", ".JSE", ".WSF", ".WSH", ".MSC"]);
 };
 export const envDelimitation: EnvDelimitation = Object.freeze({
+	add: envDelimitationAdd,
+	addAtEnd: envDelimitationAddAtEnd,
+	addAtIndex: envDelimitationAddAtIndex,
+	addAtStart: envDelimitationAddAtStart,
+	deDuplicate: envDelimitationDeDuplicate,
+	delete: envDelimitationDelete,
 	get: envDelimitationGet,
 	set: envDelimitationSet
 });
 export const envPath: EnvPath = Object.freeze({
 	add: envPathAdd,
+	addAtEnd: envPathAddAtEnd,
+	addAtIndex: envPathAddAtIndex,
+	addAtStart: envPathAddAtStart,
+	deDuplicate: envPathDeDuplicate,
 	delete: envPathDelete,
 	get: envPathGet
 });
 export const envPathExt: EnvPathExt = Object.freeze({
 	add: envPathExtAdd,
+	addAtEnd: envPathExtAddAtEnd,
+	addAtIndex: envPathExtAddAtIndex,
+	addAtStart: envPathExtAddAtStart,
+	deDuplicate: envPathExtDeDuplicate,
 	delete: envPathExtDelete,
-	get: envPathExtGet
+	get: envPathExtGet,
+	reset: envPathExtReset
 });
 export const env: Env = Object.freeze({
 	...envGeneral,

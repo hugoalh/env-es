@@ -73,15 +73,21 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
   ```
 - ```ts
   interface EnvGeneral {
-    delete(key: string): void;
+    delete(...keys: readonly (string | RegExp)[]): void;
     get(key: string): string | undefined;
     getAll(): Record<string, string>;
-    has(key: string): boolean;
+    has(key: string | RegExp): boolean;
     set(key: string, value: string): void;
   }
   ```
 - ```ts
   interface EnvDelimitation {
+    add(key: string, ...values: readonly string[]): void;
+    addAtEnd(key: string, ...values: readonly string[]): void;
+    addAtIndex(key: string, index: number, ...values: readonly string[]): void;
+    addAtStart(key: string, ...values: readonly string[]): void;
+    deDuplicate(key: string): void;
+    delete(key: string, ...values: readonly string[]): void;
     get(key: string): string[];
     set(key: string, values: readonly string[]): void;
   }
@@ -89,6 +95,10 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
 - ```ts
   interface EnvPath {
     add(...values: readonly string[]): void;
+    addAtEnd(...values: readonly string[]): void;
+    addAtIndex(index: number, ...values: readonly string[]): void;
+    addAtStart(...values: readonly string[]): void;
+    deDuplicate(): void;
     delete(...values: readonly string[]): void;
     get(): string[];
   }
@@ -96,8 +106,13 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
 - ```ts
   interface EnvPathExt {
     add(...values: readonly string[]): void;
+    addAtEnd(...values: readonly string[]): void;
+    addAtIndex(index: number, ...values: readonly string[]): void;
+    addAtStart(...values: readonly string[]): void;
+    deDuplicate(): void;
     delete(...values: readonly string[]): void;
     get(): string[] | null;
+    reset(): void;
   }
   ```
 
