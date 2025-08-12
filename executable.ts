@@ -300,8 +300,7 @@ function isExecutablePathInternalPOSIX(stat: Deno.FileInfo, options: IsExecutabl
 function isExecutablePathInternalWindows(path: string, pathExts: string[]): boolean {
 	const pathFmt: string = path.toUpperCase();
 	return pathExts.some((pathExt: string): boolean => {
-		const pathExtFmt: string = pathExt.toUpperCase();
-		return (pathFmt !== pathExtFmt && pathFmt.endsWith(pathExtFmt));
+		return (pathFmt !== pathExt && pathFmt.endsWith(pathExt));
 	});
 }
 async function isExecutablePathInternal(path: string, options: IsExecutablePathOptions, pathExts?: string[] | null): Promise<boolean> {
