@@ -2,62 +2,60 @@
 
 [**⚖️** MIT](./LICENSE.md)
 
-[![GitHub: hugoalh/env-es](https://img.shields.io/github/v/release/hugoalh/env-es?label=hugoalh/env-es&labelColor=181717&logo=github&logoColor=ffffff&sort=semver&style=flat "GitHub: hugoalh/env-es")](https://github.com/hugoalh/env-es)
-[![JSR: @hugoalh/env](https://img.shields.io/jsr/v/@hugoalh/env?label=@hugoalh/env&labelColor=F7DF1E&logo=jsr&logoColor=000000&style=flat "JSR: @hugoalh/env")](https://jsr.io/@hugoalh/env)
-[![NPM: @hugoalh/env](https://img.shields.io/npm/v/@hugoalh/env?label=@hugoalh/env&labelColor=CB3837&logo=npm&logoColor=ffffff&style=flat "NPM: @hugoalh/env")](https://www.npmjs.com/package/@hugoalh/env)
+🔗
+[GitHub](https://github.com/hugoalh/env-es)
+[JSR](https://jsr.io/@hugoalh/env)
+[NPM](https://www.npmjs.com/package/@hugoalh/env)
 
-An ECMAScript (JavaScript & TypeScript) module for enhanced environment variables operation.
+An ECMAScript module for enhanced environment variables operation.
 
-## 🔰 Begin
+## 🎯 Targets
 
-### 🎯 Targets
-
-| **Targets** | **Remote** | **JSR** | **NPM** |
+| **Runtime \\ Source** | **GitHub Raw** | **JSR** | **NPM** |
 |:--|:-:|:-:|:-:|
 | **[Bun](https://bun.sh/)** >= v1.1.0 | ❌ | ❓ | ✔️ |
 | **[Deno](https://deno.land/)** >= v2.1.0 | ✔️ | ✔️ | ✔️ |
 | **[NodeJS](https://nodejs.org/)** >= v20.9.0 | ❌ | ❓ | ✔️ |
 
-> [!NOTE]
-> - It is possible to use this module in other methods/ways which not listed in here, however those methods/ways are not officially supported, and should beware maybe cause security issues.
+## 🛡️ Runtime Permissions
 
-### #️⃣ Resources Identifier
-
-- **Remote - GitHub Raw:**
-  ```
-  https://raw.githubusercontent.com/hugoalh/env-es/{Tag}/mod.ts
-  ```
-- **JSR:**
-  ```
-  [jsr:]@hugoalh/env[@{Tag}]
-  ```
-- **NPM:**
-  ```
-  [npm:]@hugoalh/env[@{Tag}]
-  ```
-
-> [!NOTE]
-> - For usage of remote resources, it is recommended to import the entire module with the main path `mod.ts`, however it is also able to import part of the module with sub path if available, but do not import if:
->
->   - it's path has an underscore prefix (e.g.: `_foo.ts`, `_util/bar.ts`), or
->   - it is a benchmark or test file (e.g.: `foo.bench.ts`, `foo.test.ts`), or
->   - it's symbol has an underscore prefix (e.g.: `_bar`, `_foo`).
->
->   These elements are not considered part of the public API, thus no stability is guaranteed for them.
-> - For usage of JSR or NPM resources, it is recommended to import the entire module with the main entrypoint, however it is also able to import part of the module with sub entrypoint if available, please visit the [file `jsr.jsonc`](./jsr.jsonc) property `exports` for available sub entrypoints.
-> - It is recommended to use this module with tag for immutability.
-
-### 🛡️ Runtime Permissions
-
-- **Environment Variable (Deno: `env`):**
+- Environment Variable (Deno: `env`)
   - `PATH` (Optional)
   - `PATHEXT` (Optional, Windows Platforms)
   - *Resources*
-- **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
+- File System - Read (Deno: `read`; NodeJS: `fs-read`)
   - *Resources* (Optional)
-- **System Info (Deno: `sys`):**
+- System Info (Deno: `sys`)
   - `gid` (Optional, POSIX/UNIX Platforms)
   - `uid` (Optional, POSIX/UNIX Platforms)
+
+## #️⃣ Sources
+
+- GitHub Raw
+  ```
+  https://raw.githubusercontent.com/hugoalh/env-es/{Tag}/mod.ts
+  ```
+- JSR
+  ```
+  jsr:@hugoalh/env[@{Tag}]
+  ```
+- NPM
+  ```
+  npm:@hugoalh/env[@{Tag}]
+  ```
+
+> [!NOTE]
+> - It is recommended to include tag for immutability.
+> - These are not part of the public APIs hence should not be used:
+>   - Benchmark/Test file (e.g.: `example.bench.ts`, `example.test.ts`).
+>   - Entrypoint name or path include any underscore prefix (e.g.: `_example.ts`, `foo/_example.ts`).
+>   - Identifier/Namespace/Symbol include any underscore prefix (e.g.: `_example`, `Foo._example`).
+
+## ⤵️ Entrypoints
+
+| **Name** | **Path** | **Description** |
+|:--|:--|:--|
+| `.` | `./mod.ts` | Default. |
 
 ## 🧩 APIs
 
@@ -118,7 +116,7 @@ An ECMAScript (JavaScript & TypeScript) module for enhanced environment variable
 
 > [!NOTE]
 > - For the full or prettier documentation, can visit via:
->   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/documentation_generator/)
+>   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/doc/)
 >   - [JSR](https://jsr.io/@hugoalh/env)
 
 ## ✍️ Examples
