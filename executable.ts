@@ -42,12 +42,11 @@ export interface ExecutableEntry {
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - **Environment Variable (Deno: `env`):**
+ * > - Environment Variable (Deno: `env`)
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
- * >   - *Resources*
- * > - **System Info (Deno: `sys`):**
+ * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
+ * > - System Info (Deno: `sys`)
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {GetExecutableOptions} [options={}] Options.
@@ -122,12 +121,11 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - **Environment Variable (Deno: `env`):**
+ * > - Environment Variable (Deno: `env`)
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
- * >   - *Resources*
- * > - **System Info (Deno: `sys`):**
+ * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
+ * > - System Info (Deno: `sys`)
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {GetExecutableOptions} [options={}] Options.
@@ -202,12 +200,11 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - **Environment Variable (Deno: `env`):**
+ * > - Environment Variable (Deno: `env`)
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
- * >   - *Resources*
- * > - **System Info (Deno: `sys`):**
+ * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
+ * > - System Info (Deno: `sys`)
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {Omit<GetExecutableOptions, "filter">} [options={}] Options.
@@ -227,12 +224,11 @@ export async function getExecutable(specifier: string, options: Omit<GetExecutab
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - **Environment Variable (Deno: `env`):**
+ * > - Environment Variable (Deno: `env`)
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
- * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
- * >   - *Resources*
- * > - **System Info (Deno: `sys`):**
+ * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
+ * > - System Info (Deno: `sys`)
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {Omit<GetExecutableOptions, "filter">} [options={}] Options.
@@ -344,11 +340,10 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - **Environment Variable (Deno: `env`):**
+ * > - Environment Variable (Deno: `env`)
  * >   - `PATHEXT` (Windows Platforms)
- * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
- * >   - *Resources*
- * > - **System Info (Deno: `sys`):**
+ * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
+ * > - System Info (Deno: `sys`)
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {string} path Path.
@@ -363,11 +358,10 @@ export function isExecutablePath(path: string, options: IsExecutablePathOptions 
  * 
  * > **🛡️ Runtime Permissions**
  * > 
- * > - **Environment Variable (Deno: `env`):**
+ * > - Environment Variable (Deno: `env`)
  * >   - `PATHEXT` (Windows Platforms)
- * > - **File System - Read (Deno: `read`; NodeJS: `fs-read`):**
- * >   - *Resources*
- * > - **System Info (Deno: `sys`):**
+ * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
+ * > - System Info (Deno: `sys`)
  * >   - `gid` (POSIX/UNIX Platforms)
  * >   - `uid` (POSIX/UNIX Platforms)
  * @param {string} path Path.

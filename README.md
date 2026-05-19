@@ -4,8 +4,8 @@
 
 🔗
 [GitHub](https://github.com/hugoalh/env-es)
-[JSR](https://jsr.io/@hugoalh/env)
-[NPM](https://www.npmjs.com/package/@hugoalh/env)
+● [JSR](https://jsr.io/@hugoalh/env)
+● [NPM](https://www.npmjs.com/package/@hugoalh/env)
 
 An ECMAScript module for enhanced environment variables operation.
 
@@ -22,9 +22,7 @@ An ECMAScript module for enhanced environment variables operation.
 - Environment Variable (Deno: `env`)
   - `PATH` (Optional)
   - `PATHEXT` (Optional, Windows Platforms)
-  - *Resources*
-- File System - Read (Deno: `read`; NodeJS: `fs-read`)
-  - *Resources* (Optional)
+- File System - Read (Deno: `read`; NodeJS: `fs-read`) (Optional)
 - System Info (Deno: `sys`)
   - `gid` (Optional, POSIX/UNIX Platforms)
   - `uid` (Optional, POSIX/UNIX Platforms)

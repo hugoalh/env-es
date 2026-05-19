@@ -8,13 +8,9 @@ authors:
 repository-code: "https://github.com/hugoalh/env-es"
 keywords:
   - "ecmascript"
-  - "ecmascript-module"
   - "env"
   - "environment-variables"
   - "es"
-  - "es-module"
-  - "esm"
-  - "esmodule"
   - "javascript"
   - "js"
   - "ts"

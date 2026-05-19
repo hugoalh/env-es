@@ -12,8 +12,7 @@ export interface EnvGeneral {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {...string | RegExp} keys Key of the environment variables. Use `string` for exact match, or use `RegExp` for pattern match.
 	 * @returns {void}
 	 */
@@ -23,8 +22,7 @@ export interface EnvGeneral {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @returns {string | undefined} Value of the environment variable.
 	 */
@@ -34,8 +32,7 @@ export interface EnvGeneral {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @returns {Record<string, string>} A snapshot of the environment variables.
 	 */
 	getAll(): Record<string, string>;
@@ -44,8 +41,7 @@ export interface EnvGeneral {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string | RegExp} key Key of the environment variable. Use `string` for exact match, or use `RegExp` for pattern match.
 	 * @returns {boolean} Determine result.
 	 */
@@ -55,8 +51,7 @@ export interface EnvGeneral {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {string} value Value of the environment variable.
 	 * @returns {void}
@@ -72,8 +67,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -84,8 +78,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -96,8 +89,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {number} index Index of the list.
 	 * @param {...string} values Values that need to add.
@@ -109,8 +101,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -121,8 +112,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @returns {void}
 	 */
@@ -132,8 +122,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {...string} values Values that need to delete.
 	 * @returns {void}
@@ -144,8 +133,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @returns {string[]} Values of the environment variable.
 	 */
@@ -155,8 +143,7 @@ export interface EnvDelimitation {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
-	 * >   - *Resources*
+	 * > - Environment Variable (Deno: `env`)
 	 * @param {string} key Key of the environment variable.
 	 * @param {readonly string[]} values Values of the environment variable.
 	 * @returns {void}
@@ -172,7 +159,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -183,7 +170,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -194,7 +181,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @param {number} index Index of the list.
 	 * @param {...string} values Values that need to add.
@@ -206,7 +193,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -217,7 +204,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @returns {void}
 	 */
@@ -227,7 +214,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @param {...string} values Values that need to delete.
 	 * @returns {void}
@@ -238,7 +225,7 @@ export interface EnvPath {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * - **Environment Variable (Deno: `env`):**
+	 * - Environment Variable (Deno: `env`)
 	 * >   - `PATH`
 	 * @returns {string[]}
 	 */
@@ -253,7 +240,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -264,7 +251,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -275,7 +262,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @param {number} index Index of the list.
 	 * @param {...string} values Values that need to add.
@@ -287,7 +274,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @param {...string} values Values that need to add.
 	 * @returns {void}
@@ -298,7 +285,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @returns {void}
 	 */
@@ -308,7 +295,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @param {...string} values Values that need to delete.
 	 * @returns {void}
@@ -319,7 +306,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @returns {string[] | null}
 	 */
@@ -329,7 +316,7 @@ export interface EnvPathExt {
 	 * 
 	 * > **🛡️ Runtime Permissions**
 	 * > 
-	 * > - **Environment Variable (Deno: `env`):**
+	 * > - Environment Variable (Deno: `env`)
 	 * >   - `PATHEXT` (Windows Platforms)
 	 * @returns {void}
 	 */
