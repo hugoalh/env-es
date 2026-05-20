@@ -1,11 +1,14 @@
 {
 	"$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
 	"name": "@hugoalh/env",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"license": "MIT",
 	"exports": {
+		"./delimitation": "./delimitation.ts",
 		"./executable": "./executable.ts",
-		"./env": "./env.ts",
+		"./general": "./general.ts",
+		"./path": "./path.ts",
+		"./pathext": "./pathext.ts",
 		".": "./mod.ts"
 	},
 	"imports": {

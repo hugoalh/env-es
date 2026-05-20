@@ -58,58 +58,37 @@ An ECMAScript module for enhanced environment variables operation.
 ## 🧩 APIs
 
 - ```ts
-  const env: Env;
+  function deleteEnv(key: string | RegExp): void;
   ```
 - ```ts
-  interface Env extends EnvGeneral {
-    delimitation: EnvDelimitation;
-    path: EnvPath;
-    pathext: EnvPathExt;
-  }
+  function getAllEnv(): Record<string, string>;
   ```
 - ```ts
-  interface EnvGeneral {
-    delete(...keys: readonly (string | RegExp)[]): void;
-    get(key: string): string | undefined;
-    getAll(): Record<string, string>;
-    has(key: string | RegExp): boolean;
-    set(key: string, value: string): void;
-  }
+  function getEnv(key: string): string | undefined;
   ```
 - ```ts
-  interface EnvDelimitation {
-    add(key: string, ...values: readonly string[]): void;
-    addAtEnd(key: string, ...values: readonly string[]): void;
-    addAtIndex(key: string, index: number, ...values: readonly string[]): void;
-    addAtStart(key: string, ...values: readonly string[]): void;
-    deDuplicate(key: string): void;
-    delete(key: string, ...values: readonly string[]): void;
-    get(key: string): string[];
-    set(key: string, values: readonly string[]): void;
-  }
+  function hasEnv(key: string | RegExp): boolean;
   ```
 - ```ts
-  interface EnvPath {
-    add(...values: readonly string[]): void;
-    addAtEnd(...values: readonly string[]): void;
-    addAtIndex(index: number, ...values: readonly string[]): void;
-    addAtStart(...values: readonly string[]): void;
-    deDuplicate(): void;
-    delete(...values: readonly string[]): void;
-    get(): string[];
-  }
+  function setEnv(key: string, value: string): void;
   ```
 - ```ts
-  interface EnvPathExt {
-    add(...values: readonly string[]): void;
-    addAtEnd(...values: readonly string[]): void;
-    addAtIndex(index: number, ...values: readonly string[]): void;
-    addAtStart(...values: readonly string[]): void;
-    deDuplicate(): void;
-    delete(...values: readonly string[]): void;
-    get(): string[] | null;
-    reset(): void;
-  }
+  function deleteEnvPath(...values: readonly string[]): void;
+  ```
+- ```ts
+  function getEnvPath(): string[];
+  ```
+- ```ts
+  function pushEnvPath(...values: readonly string[]): void;
+  ```
+- ```ts
+  function deleteEnvPathExt(...values: readonly string[]): void;
+  ```
+- ```ts
+  function getEnvPathExt(): string[];
+  ```
+- ```ts
+  function pushEnvPathExt(...values: readonly string[]): void;
   ```
 
 > [!NOTE]
@@ -120,9 +99,9 @@ An ECMAScript module for enhanced environment variables operation.
 ## ✍️ Examples
 
 - ```ts
-  env.set("SOME_VAR", "Value");
-  env.has("SOME_VAR");
+  setEnv("SOME_VAR", "Value");
+  hasEnv("SOME_VAR");
   //=> true
-  env.get("SOME_VAR");
+  getEnv("SOME_VAR");
   //=> "Value"
   ```

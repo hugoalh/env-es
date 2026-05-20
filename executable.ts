@@ -1,10 +1,11 @@
 import {
-	extname as getPathExtname,
+	extname as resolvePathExtname,
 	isAbsolute as isPathAbsolute,
 	join as joinPath
 } from "node:path";
 import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.2.0/mod.ts";
-import { env } from "./env.ts";
+import { getEnvPath } from "./path.ts";
+import { getEnvPathExt } from "./pathext.ts";
 export interface GetExecutableOptions {
 	/**
 	 * Whether to include the entries in the working directory.
@@ -23,17 +24,26 @@ export interface GetExecutableOptions {
 export interface ExecutableEntry {
 	/**
 	 * Basename of the executable.
-	 * @example "git.exe"
+	 * @example
+	 * ```ts
+	 * "git.exe"
+	 * ```
 	 */
 	basename: string;
 	/**
 	 * Name of the executable.
-	 * @example "git"
+	 * @example
+	 * ```ts
+	 * "git"
+	 * ```
 	 */
 	name: string;
 	/**
 	 * Absolute path of the executable.
-	 * @example "C:\\Program Files\\Git\\cmd\\git.exe"
+	 * @example
+	 * ```ts
+	 * "C:\\Program Files\\Git\\cmd\\git.exe"
+	 * ```
 	 */
 	path: string;
 }
@@ -58,8 +68,8 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 		filters = []
 	} = options;
 	const yielded: Set<string> = new Set<string>();
-	const envPathExts: string[] | null = env.pathext.get();
-	const envPaths: string[] = env.path.get();
+	const envPathExts: string[] | null = getEnvPathExt();
+	const envPaths: string[] = getEnvPath();
 	if (typeof cwd === "string") {
 		envPaths.unshift(cwd);
 	} else if (cwd) {
@@ -81,7 +91,7 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 				} catch {
 					continue;
 				}
-				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - getPathExtname(basename).length) : basename;
+				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - resolvePathExtname(basename).length) : basename;
 				if (
 					filters.length === 0 ||
 					(filters.length > 0 && filters.some((filter: string | RegExp): boolean => {
@@ -116,6 +126,9 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 		}
 	}
 }
+export {
+	getAllExecutable as getAll
+};
 /**
  * Get the information of the executables, synchronously.
  * 
@@ -137,8 +150,8 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 		filters = []
 	} = options;
 	const yielded: Set<string> = new Set<string>();
-	const envPathExts: string[] | null = env.pathext.get();
-	const envPaths: string[] = env.path.get();
+	const envPathExts: string[] | null = getEnvPathExt();
+	const envPaths: string[] = getEnvPath();
 	if (typeof cwd === "string") {
 		envPaths.unshift(cwd);
 	} else if (cwd) {
@@ -160,7 +173,7 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 				} catch {
 					continue;
 				}
-				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - getPathExtname(basename).length) : basename;
+				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - resolvePathExtname(basename).length) : basename;
 				if (
 					filters.length === 0 ||
 					(filters.length > 0 && filters.some((filter: string | RegExp): boolean => {
@@ -195,6 +208,9 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 		}
 	}
 }
+export {
+	getAllExecutableSync as getAllSync
+};
 /**
  * Get the information of the executable, asynchronously.
  * 
@@ -219,6 +235,9 @@ export async function getExecutable(specifier: string, options: Omit<GetExecutab
 	}
 	return undefined;
 }
+export {
+	getExecutable as get
+};
 /**
  * Get the information of the executable, synchronously.
  * 
@@ -243,6 +262,9 @@ export function getExecutableSync(specifier: string, options: Omit<GetExecutable
 	}
 	return undefined;
 }
+export {
+	getExecutableSync as getSync
+};
 export interface IsExecutablePathOptions {
 	/**
 	 * If the path is not exist, whether to return `false` instead of throw an error.
@@ -307,7 +329,7 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 			return false;
 		}
 		if (systemName === "windows") {
-			return isExecutablePathInternalWindows(path, pathExts ?? env.pathext.get()!);
+			return isExecutablePathInternalWindows(path, pathExts ?? getEnvPathExt()!);
 		}
 		return isExecutablePathInternalPOSIX(stat, options);
 	} catch (error) {
@@ -325,7 +347,7 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
 			return false;
 		}
 		if (systemName === "windows") {
-			return isExecutablePathInternalWindows(path, pathExts ?? env.pathext.get()!);
+			return isExecutablePathInternalWindows(path, pathExts ?? getEnvPathExt()!);
 		}
 		return isExecutablePathInternalPOSIX(stat, options);
 	} catch (error) {
