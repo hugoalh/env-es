@@ -19,9 +19,6 @@ export function deDuplicateEnvDelimitation(key: string): void {
 		return setEnvDelimitation(key, result);
 	}
 }
-export {
-	deDuplicateEnvDelimitation as deDuplicate
-};
 /**
  * De-duplicate the values of the environment variable with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -38,9 +35,6 @@ export function deDuplicateEnvDelimitationSafe(key: string): void {
 		return;
 	}
 }
-export {
-	deDuplicateEnvDelimitationSafe as deDuplicateSafe
-};
 /**
  * Delete the value from the environment variable with inter-handle delimiter.
  * 
@@ -62,9 +56,6 @@ export function deleteEnvDelimitation(key: string, ...values: readonly string[])
 		}
 	}
 }
-export {
-	deleteEnvDelimitation as delete
-};
 /**
  * Delete the value from the environment variable with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -82,9 +73,6 @@ export function deleteEnvDelimitationSafe(key: string, ...values: readonly strin
 		return;
 	}
 }
-export {
-	deleteEnvDelimitationSafe as deleteSafe
-};
 /**
  * Get the values of the environment variable with inter-handle delimiter.
  * 
@@ -99,9 +87,6 @@ export function getEnvDelimitation(key: string): string[] {
 		return (value.length > 0);
 	});
 }
-export {
-	getEnvDelimitation as get
-};
 /**
  * Get the values of the environment variable with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -118,9 +103,6 @@ export function getEnvDelimitationSafe(key: string): string[] {
 		return [];
 	}
 }
-export {
-	getEnvDelimitationSafe as getSafe
-};
 /**
  * Add the value to the environment variable at the specify index of the list with inter-handle delimiter.
  * 
@@ -139,10 +121,6 @@ export function insertEnvDelimitation(key: string, index: number, ...values: rea
 		setEnvDelimitation(key, result);
 	}
 }
-export {
-	insertEnvDelimitation as addAtIndex,
-	insertEnvDelimitation as insert
-};
 /**
  * Add the value to the environment variable at the specify index of the list with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -161,10 +139,6 @@ export function insertEnvDelimitationSafe(key: string, index: number, ...values:
 		return;
 	}
 }
-export {
-	insertEnvDelimitationSafe as addAtIndexSafe,
-	insertEnvDelimitationSafe as insertSafe
-};
 /**
  * Add the value to the environment variable at the end of the list with inter-handle delimiter.
  * 
@@ -180,10 +154,6 @@ export function pushEnvDelimitation(key: string, ...values: readonly string[]): 
 		return setEnvDelimitation(key, [...getEnvDelimitation(key), ...values]);
 	}
 }
-export {
-	pushEnvDelimitation as addAtEnd,
-	pushEnvDelimitation as push
-};
 /**
  * Add the value to the environment variable at the end of the list with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -201,10 +171,6 @@ export function pushEnvDelimitationSafe(key: string, ...values: readonly string[
 		return;
 	}
 }
-export {
-	pushEnvDelimitationSafe as addAtEndSafe,
-	pushEnvDelimitationSafe as pushSafe
-};
 /**
  * Set the values of the environment variable with inter-handle delimiter.
  * 
@@ -220,9 +186,6 @@ export function setEnvDelimitation(key: string, values: readonly string[]): void
 		return (value.length > 0);
 	}).join(delimiter));
 }
-export {
-	setEnvDelimitation as set
-};
 /**
  * Set the values of the environment variable with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -240,9 +203,6 @@ export function setEnvDelimitationSafe(key: string, values: readonly string[]): 
 		return;
 	}
 }
-export {
-	setEnvDelimitationSafe as setSafe
-};
 /**
  * Add the value to the environment variable at the start of the list with inter-handle delimiter.
  * 
@@ -258,10 +218,6 @@ export function unshiftEnvDelimitation(key: string, ...values: readonly string[]
 		return setEnvDelimitation(key, [...values, ...getEnvDelimitation(key)]);
 	}
 }
-export {
-	unshiftEnvDelimitation as addAtStart,
-	unshiftEnvDelimitation as unshift
-};
 /**
  * Add the value to the environment variable at the start of the list with inter-handle delimiter, and ignore runtime permission error.
  * 
@@ -279,7 +235,3 @@ export function unshiftEnvDelimitationSafe(key: string, ...values: readonly stri
 		return;
 	}
 }
-export {
-	unshiftEnvDelimitationSafe as addAtStartSafe,
-	unshiftEnvDelimitationSafe as unshiftSafe
-};

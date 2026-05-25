@@ -1,4 +1,4 @@
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.2.0/mod.ts";
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.3.0/mod.ts";
 import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
@@ -29,9 +29,6 @@ export function deDuplicateEnvPathExt(): void {
 		return deDuplicateEnvDelimitation("PATHEXT");
 	}
 }
-export {
-	deDuplicateEnvPathExt as deDuplicate
-};
 /**
  * De-duplicate the values in the environment variable `PATHEXT`, and ignore runtime permission error; Always ignore for non Windows platforms.
  * 
@@ -48,9 +45,6 @@ export function deDuplicateEnvPathExtSafe(): void {
 		return;
 	}
 }
-export {
-	deDuplicateEnvPathExtSafe as deDuplicateSafe
-};
 /**
  * Delete the value from the environment variable `PATHEXT`; Always ignore for non Windows platforms.
  * 
@@ -69,9 +63,6 @@ export function deleteEnvPathExt(...values: readonly string[]): void {
 		}));
 	}
 }
-export {
-	deleteEnvPathExt as delete
-};
 /**
  * Delete the value from the environment variable `PATHEXT`, and ignore runtime permission error; Always ignore for non Windows platforms.
  * 
@@ -90,9 +81,6 @@ export function deleteEnvPathExtSafe(...values: readonly string[]): void {
 		return;
 	}
 }
-export {
-	deleteEnvPathExtSafe as deleteSafe
-};
 /**
  * Get the values of the environment variable `PATHEXT`; Always return `null` for non Windows platforms.
  * 
@@ -107,9 +95,6 @@ export function getEnvPathExt(): string[] | null {
 		return getEnvDelimitation("PATHEXT");
 	}
 	return null;
-};
-export {
-	getEnvPathExt as get
 };
 /**
  * Get the values of the environment variable `PATHEXT`, and ignore runtime permission error; Always return `null` for non Windows platforms.
@@ -126,9 +111,6 @@ export function getEnvPathExtSafe(): string[] | null {
 	} catch {
 		return null;
 	}
-};
-export {
-	getEnvPathExtSafe as getSafe
 };
 /**
  * Add the value to the environment variable `PATHEXT` at the specify index of the list; Always ignore for non Windows platforms.
@@ -149,10 +131,6 @@ export function insertEnvPathExt(index: number, ...values: readonly string[]): v
 		}));
 	}
 }
-export {
-	insertEnvPathExt as addAtIndex,
-	insertEnvPathExt as insert
-};
 /**
  * Add the value to the environment variable `PATHEXT` at the specify index of the list, and ignore runtime permission error; Always ignore for non Windows platforms.
  * 
@@ -172,10 +150,6 @@ export function insertEnvPathExtSafe(index: number, ...values: readonly string[]
 		return;
 	}
 }
-export {
-	insertEnvPathExtSafe as addAtIndexSafe,
-	insertEnvPathExtSafe as insertSafe
-};
 /**
  * Add the value to the environment variable `PATHEXT` at the end of the list; Always ignore for non Windows platforms.
  * 
@@ -194,10 +168,6 @@ export function pushEnvPathExt(...values: readonly string[]): void {
 		}));
 	}
 }
-export {
-	pushEnvPathExt as addAtEnd,
-	pushEnvPathExt as push
-};
 /**
  * Add the value to the environment variable `PATHEXT` at the end of the list, and ignore runtime permission error; Always ignore for non Windows platforms.
  * 
@@ -216,10 +186,6 @@ export function pushEnvPathExtSafe(...values: readonly string[]): void {
 		return;
 	}
 }
-export {
-	pushEnvPathExtSafe as addAtEndSafe,
-	pushEnvPathExtSafe as pushSafe
-};
 /**
  * Reset the values of the environment variable `PATHEXT` to the default; Always ignore for non Windows platforms.
  * 
@@ -234,9 +200,6 @@ export function resetEnvPathExt(): void {
 		return setEnvDelimitation("PATHEXT", [".COM", ".EXE", ".BAT", ".CMD", ".VBS", ".VBE", ".JS", ".JSE", ".WSF", ".WSH", ".MSC"]);
 	}
 }
-export {
-	resetEnvPathExt as reset
-};
 /**
  * Reset the values of the environment variable `PATHEXT` to the default, and ignore runtime permission error; Always ignore for non Windows platforms.
  * 
@@ -253,9 +216,6 @@ export function resetEnvPathExtSafe(): void {
 		return;
 	}
 }
-export {
-	resetEnvPathExtSafe as resetSafe
-};
 /**
  * Add the value to the environment variable `PATHEXT` at the start of the list; Always ignore for non Windows platforms.
  * 
@@ -274,10 +234,6 @@ export function unshiftEnvPathExt(...values: readonly string[]): void {
 		}));
 	}
 }
-export {
-	unshiftEnvPathExt as addAtStart,
-	unshiftEnvPathExt as unshift
-};
 /**
  * Add the value to the environment variable `PATHEXT` at the start of the list, and ignore runtime permission error; Always ignore for non Windows platforms.
  * 
@@ -296,7 +252,3 @@ export function unshiftEnvPathExtSafe(...values: readonly string[]): void {
 		return;
 	}
 }
-export {
-	unshiftEnvPathExtSafe as addAtStartSafe,
-	unshiftEnvPathExtSafe as unshiftSafe
-};

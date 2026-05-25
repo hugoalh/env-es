@@ -30,9 +30,6 @@ export function deleteEnv(key: string | RegExp): void {
 	}
 	return Deno.env.delete(key);
 }
-export {
-	deleteEnv as delete
-};
 /**
  * Delete the environment variable, and ignore runtime permission error.
  * 
@@ -61,9 +58,6 @@ export function deleteEnvSafe(key: string | RegExp): void {
 		// CONTINUE
 	}
 }
-export {
-	deleteEnvSafe as deleteSafe
-};
 /**
  * Get the value of the environment variable.
  * 
@@ -76,9 +70,6 @@ export {
 export function getEnv(key: string): string | undefined {
 	return Deno.env.get(key);
 }
-export {
-	getEnv as get
-};
 /**
  * Get the value of the environment variable, and ignore runtime permission error.
  * 
@@ -95,9 +86,6 @@ export function getEnvSafe(key: string): string | undefined {
 		return undefined;
 	}
 }
-export {
-	getEnvSafe as getSafe
-};
 /**
  * Get a snapshot of the environment variables at invocation as a simple object of keys and values.
  * 
@@ -109,9 +97,6 @@ export {
 export function getAllEnv(): Record<string, string> {
 	return Deno.env.toObject();
 }
-export {
-	getAllEnv as getAll
-};
 /**
  * Get a snapshot of the environment variables at invocation as a simple object of keys and values, and ignore runtime permission error.
  * 
@@ -127,9 +112,6 @@ export function getAllEnvSafe(): Record<string, string> {
 		return {};
 	}
 }
-export {
-	getAllEnvSafe as getAllSafe
-};
 /**
  * Check whether the environment variable is present.
  * 
@@ -147,9 +129,6 @@ export function hasEnv(key: string | RegExp): boolean {
 	}
 	return Deno.env.has(key);
 }
-export {
-	hasEnv as has
-};
 /**
  * Check whether the environment variable is present, and ignore runtime permission error.
  * 
@@ -166,9 +145,6 @@ export function hasEnvSafe(key: string | RegExp): boolean {
 		return false;
 	}
 }
-export {
-	hasEnvSafe as hasSafe
-};
 /**
  * Set the environment variable.
  * 
@@ -182,9 +158,6 @@ export {
 export function setEnv(key: string, value: string): void {
 	return Deno.env.set(key, value);
 }
-export {
-	setEnv as set
-};
 /**
  * Set the environment variable, and ignore runtime permission error.
  * 
@@ -202,6 +175,3 @@ export function setEnvSafe(key: string, value: string): void {
 		return;
 	}
 }
-export {
-	setEnvSafe as setSafe
-};

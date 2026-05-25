@@ -3,7 +3,7 @@ import {
 	isAbsolute as isPathAbsolute,
 	join as joinPath
 } from "node:path";
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.2.0/mod.ts";
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.3.0/mod.ts";
 import { getEnvPath } from "./path.ts";
 import { getEnvPathExt } from "./pathext.ts";
 export interface GetExecutableOptions {
@@ -126,9 +126,6 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 		}
 	}
 }
-export {
-	getAllExecutable as getAll
-};
 /**
  * Get the information of the executables, synchronously.
  * 
@@ -208,9 +205,6 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 		}
 	}
 }
-export {
-	getAllExecutableSync as getAllSync
-};
 /**
  * Get the information of the executable, asynchronously.
  * 
@@ -235,9 +229,6 @@ export async function getExecutable(specifier: string, options: Omit<GetExecutab
 	}
 	return undefined;
 }
-export {
-	getExecutable as get
-};
 /**
  * Get the information of the executable, synchronously.
  * 
@@ -262,9 +253,6 @@ export function getExecutableSync(specifier: string, options: Omit<GetExecutable
 	}
 	return undefined;
 }
-export {
-	getExecutableSync as getSync
-};
 export interface IsExecutablePathOptions {
 	/**
 	 * If the path is not exist, whether to return `false` instead of throw an error.
