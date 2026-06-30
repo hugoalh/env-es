@@ -25,21 +25,21 @@ await invokeDenoNodeJSTransformer({
 			"env",
 			"environment-variables"
 		],
-		homepage: "https://github.com/hugoalh/env-es#readme",
+		homepage: "https://codeberg.org/hugoalh/env-es#readme",
 		bugs: {
-			url: "https://github.com/hugoalh/env-es/issues"
+			url: "https://codeberg.org/hugoalh/env-es/issues"
 		},
 		license: "MIT",
 		author: "hugoalh",
 		repository: {
 			type: "git",
-			url: "git+https://github.com/hugoalh/env-es.git"
+			url: "git+https://codeberg.org/hugoalh/env-es.git"
 		},
 		private: false,
 		publishConfig: {
 			access: "public"
 		}
 	},
-	outputDirectory: "dist/npm-npm",
+	outputDirectory: "dist/npm-codeberg",
 	outputDirectoryPreEmpty: true
 });

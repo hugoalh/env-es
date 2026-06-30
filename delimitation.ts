@@ -20,7 +20,7 @@ export function deDuplicateEnvDelimitation(key: string): void {
 	}
 }
 /**
- * De-duplicate the values of the environment variable with inter-handle delimiter, and ignore runtime permission error.
+ * De-duplicate the values of the environment variable with inter-handle delimiter, and ignore error.
  * 
  * > **🛡️ Runtime Permissions**
  * > 
@@ -42,14 +42,16 @@ export function deDuplicateEnvDelimitationSafe(key: string): void {
  * > 
  * > - Environment Variable (Deno: `env`)
  * @param {string} key Key of the environment variable.
- * @param {...string} values Values that need to delete.
+ * @param {...(string | RegExp)} values Values that need to delete. Use `string` for exact match, or use `RegExp` for pattern match.
  * @returns {void}
  */
-export function deleteEnvDelimitation(key: string, ...values: readonly string[]): void {
+export function deleteEnvDelimitation(key: string, ...values: readonly (string | RegExp)[]): void {
 	if (values.length > 0) {
 		const original: readonly string[] = getEnvDelimitation(key);
-		const result: readonly string[] = original.filter((value: string): boolean => {
-			return !values.includes(value);
+		const result: readonly string[] = original.filter((element: string): boolean => {
+			return !values.some((value: string | RegExp): boolean => {
+				return ((value instanceof RegExp) ? value.test(element) : (value === element));
+			});
 		});
 		if (result.length < original.length) {
 			return setEnvDelimitation(key, result);
@@ -63,14 +65,17 @@ export function deleteEnvDelimitation(key: string, ...values: readonly string[])
  * > 
  * > - Environment Variable (Deno: `env`)
  * @param {string} key Key of the environment variable.
- * @param {...string} values Values that need to delete.
+ * @param {...(string | RegExp)} values Values that need to delete. Use `string` for exact match, or use `RegExp` for pattern match.
  * @returns {void}
  */
-export function deleteEnvDelimitationSafe(key: string, ...values: readonly string[]): void {
+export function deleteEnvDelimitationSafe(key: string, ...values: readonly (string | RegExp)[]): void {
 	try {
 		return deleteEnvDelimitation(key, ...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -99,8 +104,11 @@ export function getEnvDelimitation(key: string): string[] {
 export function getEnvDelimitationSafe(key: string): string[] {
 	try {
 		return getEnvDelimitation(key);
-	} catch {
-		return [];
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return [];
+		}
+		throw error;
 	}
 }
 /**
@@ -135,8 +143,11 @@ export function insertEnvDelimitation(key: string, index: number, ...values: rea
 export function insertEnvDelimitationSafe(key: string, index: number, ...values: readonly string[]): void {
 	try {
 		return insertEnvDelimitation(key, index, ...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -167,8 +178,11 @@ export function pushEnvDelimitation(key: string, ...values: readonly string[]): 
 export function pushEnvDelimitationSafe(key: string, ...values: readonly string[]): void {
 	try {
 		return pushEnvDelimitation(key, ...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -199,8 +213,11 @@ export function setEnvDelimitation(key: string, values: readonly string[]): void
 export function setEnvDelimitationSafe(key: string, values: readonly string[]): void {
 	try {
 		return setEnvDelimitation(key, values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -231,7 +248,10 @@ export function unshiftEnvDelimitation(key: string, ...values: readonly string[]
 export function unshiftEnvDelimitationSafe(key: string, ...values: readonly string[]): void {
 	try {
 		return unshiftEnvDelimitation(key, ...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }

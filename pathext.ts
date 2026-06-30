@@ -1,4 +1,4 @@
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.3.0/mod.ts";
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.4.0/mod.ts";
 import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
@@ -30,7 +30,7 @@ export function deDuplicateEnvPathExt(): void {
 	}
 }
 /**
- * De-duplicate the values in the environment variable `PATHEXT`, and ignore runtime permission error; Always ignore for non Windows platforms.
+ * De-duplicate the values in the environment variable `PATHEXT`, and ignore error; Always ignore for non Windows platforms.
  * 
  * > **🛡️ Runtime Permissions**
  * > 
@@ -74,11 +74,13 @@ export function deleteEnvPathExt(...values: readonly string[]): void {
  * @returns {void}
  */
 export function deleteEnvPathExtSafe(...values: readonly string[]): void {
-	assertValuesFileExtension(...values);
 	try {
 		return deleteEnvPathExt(...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -108,8 +110,11 @@ export function getEnvPathExt(): string[] | null {
 export function getEnvPathExtSafe(): string[] | null {
 	try {
 		return getEnvPathExt();
-	} catch {
-		return null;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return null;
+		}
+		throw error;
 	}
 };
 /**
@@ -143,11 +148,13 @@ export function insertEnvPathExt(index: number, ...values: readonly string[]): v
  * @returns {void}
  */
 export function insertEnvPathExtSafe(index: number, ...values: readonly string[]): void {
-	assertValuesFileExtension(...values);
 	try {
 		return insertEnvPathExt(index, ...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -179,11 +186,13 @@ export function pushEnvPathExt(...values: readonly string[]): void {
  * @returns {void}
  */
 export function pushEnvPathExtSafe(...values: readonly string[]): void {
-	assertValuesFileExtension(...values);
 	try {
 		return pushEnvPathExt(...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -212,8 +221,11 @@ export function resetEnvPathExt(): void {
 export function resetEnvPathExtSafe(): void {
 	try {
 		return resetEnvPathExt();
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -245,10 +257,12 @@ export function unshiftEnvPathExt(...values: readonly string[]): void {
  * @returns {void}
  */
 export function unshiftEnvPathExtSafe(...values: readonly string[]): void {
-	assertValuesFileExtension(...values);
 	try {
 		return unshiftEnvPathExt(...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }

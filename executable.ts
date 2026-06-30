@@ -1,9 +1,9 @@
+import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.4.0/mod.ts";
 import {
 	extname as resolvePathExtname,
 	isAbsolute as isPathAbsolute,
 	join as joinPath
 } from "node:path";
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.3.0/mod.ts";
 import { getEnvPath } from "./path.ts";
 import { getEnvPathExt } from "./pathext.ts";
 export interface GetExecutableOptions {

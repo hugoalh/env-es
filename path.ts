@@ -19,7 +19,7 @@ export function deDuplicateEnvPath(): void {
 	return deDuplicateEnvDelimitation("PATH");
 }
 /**
- * De-duplicate the values in the environment variable `PATH`, and ignore runtime permission error.
+ * De-duplicate the values in the environment variable `PATH`, and ignore error.
  * 
  * > **🛡️ Runtime Permissions**
  * > 
@@ -41,10 +41,10 @@ export function deDuplicateEnvPathSafe(): void {
  * > 
  * > - Environment Variable (Deno: `env`)
  * >   - `PATH`
- * @param {...string} values Values that need to delete.
+ * @param {...(string | RegExp)} values Values that need to delete. Use `string` for exact match, or use `RegExp` for pattern match.
  * @returns {void}
  */
-export function deleteEnvPath(...values: readonly string[]): void {
+export function deleteEnvPath(...values: readonly (string | RegExp)[]): void {
 	return deleteEnvDelimitation("PATH", ...values);
 }
 /**
@@ -54,14 +54,17 @@ export function deleteEnvPath(...values: readonly string[]): void {
  * > 
  * > - Environment Variable (Deno: `env`)
  * >   - `PATH`
- * @param {...string} values Values that need to delete.
+ * @param {...(string | RegExp)} values Values that need to delete. Use `string` for exact match, or use `RegExp` for pattern match.
  * @returns {void}
  */
-export function deleteEnvPathSafe(...values: readonly string[]): void {
+export function deleteEnvPathSafe(...values: readonly (string | RegExp)[]): void {
 	try {
 		return deleteEnvPath(...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -88,8 +91,11 @@ export function getEnvPath(): string[] {
 export function getEnvPathSafe(): string[] {
 	try {
 		return getEnvPath();
-	} catch {
-		return [];
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return [];
+		}
+		throw error;
 	}
 }
 /**
@@ -120,8 +126,11 @@ export function insertEnvPath(index: number, ...values: readonly string[]): void
 export function insertEnvPathSafe(index: number, ...values: readonly string[]): void {
 	try {
 		return insertEnvPath(index, ...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -150,8 +159,11 @@ export function pushEnvPath(...values: readonly string[]): void {
 export function pushEnvPathSafe(...values: readonly string[]): void {
 	try {
 		return pushEnvPath(...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -180,7 +192,10 @@ export function unshiftEnvPath(...values: readonly string[]): void {
 export function unshiftEnvPathSafe(...values: readonly string[]): void {
 	try {
 		return unshiftEnvPath(...values);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }

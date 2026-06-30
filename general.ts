@@ -10,18 +10,14 @@
 export function deleteEnv(key: string | RegExp): void {
 	if (key instanceof RegExp) {
 		const errors: Error[] = [];
-		try {
-			for (const envKey of Object.keys(getAllEnv())) {
-				if (key.test(envKey)) {
-					try {
-						Deno.env.delete(envKey);
-					} catch (error) {
-						errors.push(error as Error);
-					}
+		for (const envKey of Object.keys(getAllEnv())) {
+			if (key.test(envKey)) {
+				try {
+					Deno.env.delete(envKey);
+				} catch (error) {
+					errors.push(error as Error);
 				}
 			}
-		} catch (error) {
-			errors.push(error as Error);
 		}
 		if (errors.length > 0) {
 			throw new AggregateError(errors, `Unable to delete some of the environment variables!`);
@@ -40,22 +36,13 @@ export function deleteEnv(key: string | RegExp): void {
  * @returns {void}
  */
 export function deleteEnvSafe(key: string | RegExp): void {
-	if (key instanceof RegExp) {
-		for (const envKey of Object.keys(getAllEnvSafe())) {
-			if (key.test(envKey)) {
-				try {
-					Deno.env.delete(envKey);
-				} catch {
-					// CONTINUE
-				}
-			}
-		}
-		return;
-	}
 	try {
-		return Deno.env.delete(key);
-	} catch {
-		// CONTINUE
+		return deleteEnv(key);
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
@@ -82,8 +69,11 @@ export function getEnv(key: string): string | undefined {
 export function getEnvSafe(key: string): string | undefined {
 	try {
 		return getEnv(key);
-	} catch {
-		return undefined;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return undefined;
+		}
+		throw error;
 	}
 }
 /**
@@ -108,8 +98,11 @@ export function getAllEnv(): Record<string, string> {
 export function getAllEnvSafe(): Record<string, string> {
 	try {
 		return getAllEnv();
-	} catch {
-		return {};
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return {};
+		}
+		throw error;
 	}
 }
 /**
@@ -141,8 +134,11 @@ export function hasEnv(key: string | RegExp): boolean {
 export function hasEnvSafe(key: string | RegExp): boolean {
 	try {
 		return hasEnv(key);
-	} catch {
-		return false;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return false;
+		}
+		throw error;
 	}
 }
 /**
@@ -171,7 +167,10 @@ export function setEnv(key: string, value: string): void {
 export function setEnvSafe(key: string, value: string): void {
 	try {
 		return setEnv(key, value);
-	} catch {
-		return;
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
