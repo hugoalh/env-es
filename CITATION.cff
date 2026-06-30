@@ -7,6 +7,7 @@ authors:
   - name: "HUGOALH"
     alias: "hugoalh"
 repository-code: "https://github.com/hugoalh/env-es"
+abstract: "An ECMAScript module for enhanced environment variables operation."
 keywords:
   - "ecmascript"
   - "env"
