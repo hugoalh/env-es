@@ -46,6 +46,11 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
 | **Name** | **Path** | **Description** |
 |:--|:--|:--|
 | `.` | `./mod.ts` | Default. |
+| `./delimitation` | `./delimitation.ts` | Environment variable operation with delimitation. |
+| `./executable` | `./executable.ts` | Path execution operation. |
+| `./general` | `./general.ts` | General operation. |
+| `./path` | `./path.ts` | `PATH` operation. |
+| `./pathext` | `./pathext.ts` | `PATHEXT` operation. |
 
 > [!NOTE]
 > - Different runtimes have vary support for the sources and entrypoints, visit the runtime documentation for more information.
@@ -73,10 +78,13 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
   function setEnv(key: string, value: string): void;
   ```
 - ```ts
-  function deleteEnvPath(...values: readonly string[]): void;
+  function deleteEnvPath(...values: readonly (string | RegExp)[]): void;
   ```
 - ```ts
   function getEnvPath(): string[];
+  ```
+- ```ts
+  function hasEnvPath(value: string | RegExp): boolean;
   ```
 - ```ts
   function pushEnvPath(...values: readonly string[]): void;
