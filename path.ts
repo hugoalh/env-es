@@ -99,6 +99,42 @@ export function getEnvPathSafe(): string[] {
 	}
 }
 /**
+ * Check whether the value is present in the environment variable `PATH`.
+ * 
+ * > **🛡️ Runtime Permissions**
+ * > 
+ * > - Environment Variable (Deno: `env`)
+ * >   - `PATH`
+ * @param {string | RegExp} value Value. Use `string` for exact match, or use `RegExp` for pattern match.
+ * @returns {boolean} Determine result.
+ */
+export function hasEnvPath(value: string | RegExp): boolean {
+	const values: readonly string[] = getEnvPath();
+	return values.some((envValue: string): boolean => {
+		return ((value instanceof RegExp) ? value.test(envValue) : (value === envValue));
+	});
+}
+/**
+ * Check whether the value is present in the environment variable `PATH`, and ignore runtime permission error.
+ * 
+ * > **🛡️ Runtime Permissions**
+ * > 
+ * > - Environment Variable (Deno: `env`)
+ * >   - `PATH`
+ * @param {string | RegExp} value Value. Use `string` for exact match, or use `RegExp` for pattern match.
+ * @returns {boolean} Determine result.
+ */
+export function hasEnvPathSafe(value: string | RegExp): boolean {
+	try {
+		return hasEnvPath(value);
+	} catch (error) {
+		if (error instanceof Deno.errors.NotCapable) {
+			return false;
+		}
+		throw error;
+	}
+}
+/**
  * Add the value to the environment variable `PATH` at the specify index of the list.
  * 
  * > **🛡️ Runtime Permissions**
