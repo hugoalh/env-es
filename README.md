@@ -66,7 +66,7 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
   function deleteEnv(key: string | RegExp): void;
   ```
 - ```ts
-  function getAllEnv(): Record<string, string>;
+  function getAllEnv(): Record<string, string | undefined>;
   ```
 - ```ts
   function getEnv(key: string): string | undefined;

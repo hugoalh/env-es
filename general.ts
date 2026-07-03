@@ -82,9 +82,9 @@ export function getEnvSafe(key: string): string | undefined {
  * > **🛡️ Runtime Permissions**
  * > 
  * > - Environment Variable (Deno: `env`)
- * @returns {Record<string, string>} A snapshot of the environment variables.
+ * @returns {Record<string, string | undefined>} A snapshot of the environment variables.
  */
-export function getAllEnv(): Record<string, string> {
+export function getAllEnv(): Record<string, string | undefined> {
 	return Deno.env.toObject();
 }
 /**
@@ -93,9 +93,9 @@ export function getAllEnv(): Record<string, string> {
  * > **🛡️ Runtime Permissions**
  * > 
  * > - Environment Variable (Deno: `env`)
- * @returns {Record<string, string>} A snapshot of the environment variables.
+ * @returns {Record<string, string | undefined>} A snapshot of the environment variables.
  */
-export function getAllEnvSafe(): Record<string, string> {
+export function getAllEnvSafe(): Record<string, string | undefined> {
 	try {
 		return getAllEnv();
 	} catch (error) {
