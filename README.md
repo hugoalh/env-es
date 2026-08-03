@@ -101,7 +101,7 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
 
 > [!NOTE]
 > - For the full or prettier documentation, can visit via:
->   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/doc/)
+>   - [Deno CLI `deno doc`](https://docs.deno.com/runtime/reference/cli/doc)
 >   - [JSR](https://jsr.io/@hugoalh/env)
 
 ## ✍️ Examples
