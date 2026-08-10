@@ -28,20 +28,7 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
   - `gid` (Optional, POSIX/UNIX Platforms)
   - `uid` (Optional, POSIX/UNIX Platforms)
 
-## #️⃣ Sources & Entrypoints
-
-- GitHub Raw
-  ```
-  https://raw.githubusercontent.com/hugoalh/env-es/{Tag}/mod.ts
-  ```
-- JSR
-  ```
-  jsr:@hugoalh/env[@{Tag}]
-  ```
-- NPM
-  ```
-  npm:@hugoalh/env[@{Tag}]
-  ```
+## #️⃣ Entrypoints
 
 | **Name** | **Path** | **Description** |
 |:--|:--|:--|
@@ -53,8 +40,7 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
 | `./pathext` | `./pathext.ts` | `PATHEXT` operation. |
 
 > [!NOTE]
-> - Different runtimes have vary support for the sources and entrypoints, visit the runtime documentation for more information.
-> - It is recommended to include tag for immutability.
+> - Different runtimes have vary support for the entrypoints, visit the runtime documentation for more information.
 > - These are not part of the public APIs hence should not be used:
 >   - Benchmark/Test file (e.g.: `example.bench.ts`, `example.test.ts`).
 >   - Entrypoint name or path include any underscore prefix (e.g.: `_example.ts`, `foo/_example.ts`).

@@ -12,7 +12,7 @@ await transform({
 	entrypointsScript: manifest.exports,
 	generateDeclarationMap: true,
 	mappings: {
-		"https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.4.0/mod.ts": {
+		"jsr:@hugoalh/runtime-info@^0.4.0": {
 			name: "@hugoalh/runtime-info",
 			version: "^0.4.0"
 		}

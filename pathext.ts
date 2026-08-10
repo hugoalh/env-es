@@ -1,4 +1,4 @@
-import { systemName } from "https://raw.githubusercontent.com/hugoalh/runtime-info-es/v0.4.0/mod.ts";
+import { systemName } from "jsr:@hugoalh/runtime-info@^0.4.0";
 import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
