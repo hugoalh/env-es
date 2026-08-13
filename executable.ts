@@ -1,5 +1,14 @@
 import { systemName } from "jsr:@hugoalh/runtime-info@^0.4.0";
 import {
+	readdirSync as readDirSync,
+	statSync,
+	type Stats
+} from "node:fs";
+import {
+	readdir as readDir,
+	stat
+} from "node:fs/promises";
+import {
 	extname as resolvePathExtname,
 	isAbsolute as isPathAbsolute,
 	join as joinPath
@@ -12,7 +21,6 @@ import {
 import DenoShim from "./_shim/deno.ts";
 import { getEnvPath } from "./path.ts";
 import { getEnvPathExt } from "./pathext.ts";
-type DenoFileInfo = ReturnType<typeof DenoShim.statSync>;
 export interface GetExecutableOptions {
 	/**
 	 * Whether to include the entries in the working directory.
@@ -54,6 +62,13 @@ export interface ExecutableEntry {
 	 */
 	path: string;
 }
+function resolveExecutableEntry(envPath: string, name: string): ExecutableEntry {
+	return {
+		basename: name,
+		name: (systemName === "windows") ? name.slice(0, name.length - resolvePathExtname(name).length) : name,
+		path: joinPath(envPath, name)
+	};
+}
 /**
  * Get the information of the executables, asynchronously.
  * 
@@ -87,46 +102,53 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 			continue;
 		}
 		try {
-			for await (const { name: basename } of DenoShim.readDir(envPath)) {
-				const path: string = joinPath(envPath, basename);
+			for (const name of await readDir(envPath, {
+				encoding: "utf8",
+				recursive: false,
+				withFileTypes: false
+			})) {
+				const entry: ExecutableEntry = resolveExecutableEntry(envPath, name);
 				try {
 					if (
-						yielded.has(path) ||
-						!(await isExecutablePathInternal(path, {}, envPathExts))
+						yielded.has(entry.path) ||
+						!(await isExecutablePathInternal(entry.path, {}, envPathExts))
 					) {
 						continue;
 					}
 				} catch {
 					continue;
 				}
-				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - resolvePathExtname(basename).length) : basename;
 				if (
 					filters.length === 0 ||
-					(filters.length > 0 && filters.some((filter: string | RegExp): boolean => {
-						return ((typeof filter === "string") ? (
-							filter === basename ||
-							filter === name ||
-							filter === path
-						) : (
-							filter.test(basename) ||
-							filter.test(name) ||
-							filter.test(path)
-						));
-					}))
+					filters.some((filter: string | RegExp): boolean => {
+						if (filter instanceof RegExp) {
+							return (
+								filter.test(entry.basename) ||
+								filter.test(entry.name) ||
+								filter.test(entry.path)
+							);
+						}
+						return (
+							filter === entry.basename ||
+							filter === entry.name ||
+							filter === entry.path
+						);
+					})
 				) {
-					yielded.add(path);
-					yield {
-						basename,
-						name,
-						path
-					};
+					yielded.add(entry.path);
+					yield entry;
 				}
 			}
 		} catch (error) {
+			//@ts-ignore NodeJS error code.
+			const errorCode: string | undefined = error?.code;
 			if (
 				error instanceof DenoShim.errors.NotADirectory ||
 				error instanceof DenoShim.errors.NotFound ||
-				error instanceof DenoShim.errors.PermissionDenied
+				error instanceof DenoShim.errors.PermissionDenied ||
+				errorCode === "EACCES" ||
+				errorCode === "ENOENT" ||
+				errorCode === "ENOTDIR"
 			) {
 				continue;
 			}
@@ -167,46 +189,49 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 			continue;
 		}
 		try {
-			for (const { name: basename } of DenoShim.readDirSync(envPath)) {
-				const path: string = joinPath(envPath, basename);
+			for (const basename of readDirSync(envPath)) {
+				const entry: ExecutableEntry = resolveExecutableEntry(envPath, basename);
 				try {
 					if (
-						yielded.has(path) ||
-						!(isExecutablePathInternalSync(path, {}, envPathExts))
+						yielded.has(entry.path) ||
+						!(isExecutablePathInternalSync(entry.path, {}, envPathExts))
 					) {
 						continue;
 					}
 				} catch {
 					continue;
 				}
-				const name: string = (systemName === "windows") ? basename.slice(0, basename.length - resolvePathExtname(basename).length) : basename;
 				if (
 					filters.length === 0 ||
-					(filters.length > 0 && filters.some((filter: string | RegExp): boolean => {
-						return ((typeof filter === "string") ? (
-							filter === basename ||
-							filter === name ||
-							filter === path
-						) : (
-							filter.test(basename) ||
-							filter.test(name) ||
-							filter.test(path)
-						));
-					}))
+					filters.some((filter: string | RegExp): boolean => {
+						if (filter instanceof RegExp) {
+							return (
+								filter.test(entry.basename) ||
+								filter.test(entry.name) ||
+								filter.test(entry.path)
+							);
+						}
+						return (
+							filter === entry.basename ||
+							filter === entry.name ||
+							filter === entry.path
+						);
+					})
 				) {
-					yielded.add(path);
-					yield {
-						basename,
-						name,
-						path
-					};
+					yielded.add(entry.path);
+					yield entry;
 				}
 			}
 		} catch (error) {
+			//@ts-ignore NodeJS error code.
+			const errorCode: string | undefined = error?.code;
 			if (
 				error instanceof DenoShim.errors.NotADirectory ||
 				error instanceof DenoShim.errors.NotFound ||
-				error instanceof DenoShim.errors.PermissionDenied
+				error instanceof DenoShim.errors.PermissionDenied ||
+				errorCode === "EACCES" ||
+				errorCode === "ENOENT" ||
+				errorCode === "ENOTDIR"
 			) {
 				continue;
 			}
@@ -284,7 +309,7 @@ export interface IsExecutablePathOptions {
 const g = 0o010;
 const o = 0o001;
 const u = 0o100;
-function isExecutablePathInternalPOSIX(stat: DenoFileInfo, options: IsExecutablePathOptions): boolean {
+function isExecutablePathInternalPOSIX(stat: Stats, options: IsExecutablePathOptions): boolean {
 	const ownGid: number | undefined = options.gid ?? getgid?.();
 	const ownUid: number | undefined = options.uid ?? getuid?.();
 	if (typeof ownGid === "undefined") {
@@ -293,16 +318,16 @@ function isExecutablePathInternalPOSIX(stat: DenoFileInfo, options: IsExecutable
 	if (typeof ownUid === "undefined") {
 		throw new Error(`Unable to get the user ID of the process!`);
 	}
-	const pathGid: number | null = stat.gid;
-	const pathMode: number | null = stat.mode;
-	const pathUid: number | null = stat.uid;
-	if (pathGid === null) {
+	const pathGid: number | undefined = stat.gid;
+	const pathMode: number | undefined = stat.mode;
+	const pathUid: number | undefined = stat.uid;
+	if (typeof pathGid === "undefined") {
 		throw new Error(`Unable to get the group ID of the file!`);
 	}
-	if (pathMode === null) {
+	if (typeof pathMode === "undefined") {
 		throw new Error(`Unable to get the mode of the file!`);
 	}
-	if (pathUid === null) {
+	if (typeof pathUid === "undefined") {
 		throw new Error(`Unable to get the user ID of the file!`);
 	}
 	return (
@@ -321,16 +346,21 @@ function isExecutablePathInternalWindows(path: string, pathExts: string[]): bool
 async function isExecutablePathInternal(path: string, options: IsExecutablePathOptions, pathExts?: string[] | null): Promise<boolean> {
 	const { mayNotExist = false } = options;
 	try {
-		const stat: DenoFileInfo = await DenoShim.stat(path);
-		if (!stat.isFile) {
+		const pathStat: Stats = await stat(path);
+		if (!pathStat.isFile()) {
 			return false;
 		}
 		if (systemName === "windows") {
 			return isExecutablePathInternalWindows(path, pathExts ?? getEnvPathExt()!);
 		}
-		return isExecutablePathInternalPOSIX(stat, options);
+		return isExecutablePathInternalPOSIX(pathStat, options);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotFound && mayNotExist) {
+		//@ts-ignore NodeJS error code.
+		const errorCode: string | undefined = error?.code;
+		if ((
+			error instanceof DenoShim.errors.NotFound ||
+			errorCode === "ENOTDIR"
+		) && mayNotExist) {
 			return false;
 		}
 		throw error;
@@ -339,16 +369,21 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 function isExecutablePathInternalSync(path: string, options: IsExecutablePathOptions, pathExts?: string[] | null): boolean {
 	const { mayNotExist = false } = options;
 	try {
-		const stat: DenoFileInfo = DenoShim.statSync(path);
-		if (!stat.isFile) {
+		const pathStat: Stats = statSync(path);
+		if (!pathStat.isFile()) {
 			return false;
 		}
 		if (systemName === "windows") {
 			return isExecutablePathInternalWindows(path, pathExts ?? getEnvPathExt()!);
 		}
-		return isExecutablePathInternalPOSIX(stat, options);
+		return isExecutablePathInternalPOSIX(pathStat, options);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotFound && mayNotExist) {
+		//@ts-ignore NodeJS error code.
+		const errorCode: string | undefined = error?.code;
+		if ((
+			error instanceof DenoShim.errors.NotFound ||
+			errorCode === "ENOTDIR"
+		) && mayNotExist) {
 			return false;
 		}
 		throw error;
