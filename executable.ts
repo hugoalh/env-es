@@ -62,6 +62,17 @@ export interface ExecutableEntry {
 	 */
 	path: string;
 }
+function resolveEnvPaths(includeCWD: boolean | string): readonly string[] {
+	const paths: string[] = getEnvPath();
+	if (typeof includeCWD === "string") {
+		paths.unshift(includeCWD);
+	} else if (includeCWD) {
+		paths.unshift(cwd());
+	}
+	return paths.filter((path: string): boolean => {
+		return isPathAbsolute(path);
+	});
+}
 function resolveExecutableEntry(envPath: string, name: string): ExecutableEntry {
 	return {
 		basename: name,
@@ -126,16 +137,7 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 	} = options;
 	const yielder: ExecutableYielder = new ExecutableYielder(filters);
 	const envPathExts: string[] | null = getEnvPathExt();
-	const envPaths: string[] = getEnvPath();
-	if (typeof includeCWD === "string") {
-		envPaths.unshift(includeCWD);
-	} else if (includeCWD) {
-		envPaths.unshift(cwd());
-	}
-	for (const envPath of envPaths) {
-		if (!isPathAbsolute(envPath)) {
-			continue;
-		}
+	for (const envPath of resolveEnvPaths(includeCWD)) {
 		try {
 			for (const name of await readDir(envPath, {
 				encoding: "utf8",
@@ -198,16 +200,7 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 	} = options;
 	const yielder: ExecutableYielder = new ExecutableYielder(filters);
 	const envPathExts: string[] | null = getEnvPathExt();
-	const envPaths: string[] = getEnvPath();
-	if (typeof includeCWD === "string") {
-		envPaths.unshift(includeCWD);
-	} else if (includeCWD) {
-		envPaths.unshift(cwd());
-	}
-	for (const envPath of envPaths) {
-		if (!isPathAbsolute(envPath)) {
-			continue;
-		}
+	for (const envPath of resolveEnvPaths(includeCWD)) {
 		try {
 			for (const basename of readDirSync(envPath)) {
 				const entry: ExecutableEntry = resolveExecutableEntry(envPath, basename);
