@@ -69,6 +69,41 @@ function resolveExecutableEntry(envPath: string, name: string): ExecutableEntry 
 		path: joinPath(envPath, name)
 	};
 }
+class ExecutableYielder {
+	#bin: Set<string> = new Set<string>();
+	#filters: readonly (string | RegExp)[] = [];
+	constructor(filters: readonly (string | RegExp)[]) {
+		this.#filters = filters;
+	}
+	add(entry: ExecutableEntry): void {
+		this.#bin.add(entry.path);
+	}
+	canYield(entry: ExecutableEntry): boolean {
+		if (this.isYielded(entry)) {
+			return false;
+		}
+		return (
+			this.#filters.length === 0 ||
+			this.#filters.some((filter: string | RegExp): boolean => {
+				if (filter instanceof RegExp) {
+					return (
+						filter.test(entry.basename) ||
+						filter.test(entry.name) ||
+						filter.test(entry.path)
+					);
+				}
+				return (
+					filter === entry.basename ||
+					filter === entry.name ||
+					filter === entry.path
+				);
+			})
+		);
+	}
+	isYielded(entry: ExecutableEntry): boolean {
+		return this.#bin.has(entry.path);
+	}
+}
 /**
  * Get the information of the executables, asynchronously.
  * 
@@ -89,7 +124,7 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 		cwd: includeCWD = false,
 		filters = []
 	} = options;
-	const yielded: Set<string> = new Set<string>();
+	const yielder: ExecutableYielder = new ExecutableYielder(filters);
 	const envPathExts: string[] | null = getEnvPathExt();
 	const envPaths: string[] = getEnvPath();
 	if (typeof includeCWD === "string") {
@@ -110,7 +145,7 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 				const entry: ExecutableEntry = resolveExecutableEntry(envPath, name);
 				try {
 					if (
-						yielded.has(entry.path) ||
+						yielder.isYielded(entry) ||
 						!(await isExecutablePathInternal(entry.path, {}, envPathExts))
 					) {
 						continue;
@@ -118,37 +153,22 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 				} catch {
 					continue;
 				}
-				if (
-					filters.length === 0 ||
-					filters.some((filter: string | RegExp): boolean => {
-						if (filter instanceof RegExp) {
-							return (
-								filter.test(entry.basename) ||
-								filter.test(entry.name) ||
-								filter.test(entry.path)
-							);
-						}
-						return (
-							filter === entry.basename ||
-							filter === entry.name ||
-							filter === entry.path
-						);
-					})
-				) {
-					yielded.add(entry.path);
+				if (yielder.canYield(entry)) {
+					yielder.add(entry);
 					yield entry;
 				}
 			}
 		} catch (error) {
 			//@ts-ignore NodeJS error code.
-			const errorCode: string | undefined = error?.code;
+			const errorCode: unknown = error?.code;
 			if (
 				error instanceof DenoShim.errors.NotADirectory ||
 				error instanceof DenoShim.errors.NotFound ||
 				error instanceof DenoShim.errors.PermissionDenied ||
 				errorCode === "EACCES" ||
 				errorCode === "ENOENT" ||
-				errorCode === "ENOTDIR"
+				errorCode === "ENOTDIR" ||
+				errorCode === "ERR_ACCESS_DENIED"
 			) {
 				continue;
 			}
@@ -176,7 +196,7 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 		cwd: includeCWD = false,
 		filters = []
 	} = options;
-	const yielded: Set<string> = new Set<string>();
+	const yielder: ExecutableYielder = new ExecutableYielder(filters);
 	const envPathExts: string[] | null = getEnvPathExt();
 	const envPaths: string[] = getEnvPath();
 	if (typeof includeCWD === "string") {
@@ -193,7 +213,7 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 				const entry: ExecutableEntry = resolveExecutableEntry(envPath, basename);
 				try {
 					if (
-						yielded.has(entry.path) ||
+						yielder.isYielded(entry) ||
 						!(isExecutablePathInternalSync(entry.path, {}, envPathExts))
 					) {
 						continue;
@@ -201,37 +221,22 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 				} catch {
 					continue;
 				}
-				if (
-					filters.length === 0 ||
-					filters.some((filter: string | RegExp): boolean => {
-						if (filter instanceof RegExp) {
-							return (
-								filter.test(entry.basename) ||
-								filter.test(entry.name) ||
-								filter.test(entry.path)
-							);
-						}
-						return (
-							filter === entry.basename ||
-							filter === entry.name ||
-							filter === entry.path
-						);
-					})
-				) {
-					yielded.add(entry.path);
+				if (yielder.canYield(entry)) {
+					yielder.add(entry);
 					yield entry;
 				}
 			}
 		} catch (error) {
 			//@ts-ignore NodeJS error code.
-			const errorCode: string | undefined = error?.code;
+			const errorCode: unknown = error?.code;
 			if (
 				error instanceof DenoShim.errors.NotADirectory ||
 				error instanceof DenoShim.errors.NotFound ||
 				error instanceof DenoShim.errors.PermissionDenied ||
 				errorCode === "EACCES" ||
 				errorCode === "ENOENT" ||
-				errorCode === "ENOTDIR"
+				errorCode === "ENOTDIR" ||
+				errorCode === "ERR_ACCESS_DENIED"
 			) {
 				continue;
 			}
@@ -356,10 +361,10 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 		return isExecutablePathInternalPOSIX(pathStat, options);
 	} catch (error) {
 		//@ts-ignore NodeJS error code.
-		const errorCode: string | undefined = error?.code;
+		const errorCode: unknown = error?.code;
 		if ((
 			error instanceof DenoShim.errors.NotFound ||
-			errorCode === "ENOTDIR"
+			errorCode === "ENOENT"
 		) && mayNotExist) {
 			return false;
 		}
@@ -379,10 +384,10 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
 		return isExecutablePathInternalPOSIX(pathStat, options);
 	} catch (error) {
 		//@ts-ignore NodeJS error code.
-		const errorCode: string | undefined = error?.code;
+		const errorCode: unknown = error?.code;
 		if ((
 			error instanceof DenoShim.errors.NotFound ||
-			errorCode === "ENOTDIR"
+			errorCode === "ENOENT"
 		) && mayNotExist) {
 			return false;
 		}
