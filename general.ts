@@ -1,3 +1,4 @@
+import DenoShim from "./_shim/deno.ts";
 /**
  * Delete the environment variable.
  * 
@@ -13,7 +14,7 @@ export function deleteEnv(key: string | RegExp): void {
 		for (const envKey of Object.keys(getAllEnv())) {
 			if (key.test(envKey)) {
 				try {
-					Deno.env.delete(envKey);
+					DenoShim.env.delete(envKey);
 				} catch (error) {
 					errors.push(error as Error);
 				}
@@ -24,7 +25,7 @@ export function deleteEnv(key: string | RegExp): void {
 		}
 		return;
 	}
-	return Deno.env.delete(key);
+	return DenoShim.env.delete(key);
 }
 /**
  * Delete the environment variable, and ignore runtime permission error.
@@ -39,7 +40,7 @@ export function deleteEnvSafe(key: string | RegExp): void {
 	try {
 		return deleteEnv(key);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -55,7 +56,7 @@ export function deleteEnvSafe(key: string | RegExp): void {
  * @returns {string | undefined} Value of the environment variable.
  */
 export function getEnv(key: string): string | undefined {
-	return Deno.env.get(key);
+	return DenoShim.env.get(key);
 }
 /**
  * Get the value of the environment variable, and ignore runtime permission error.
@@ -70,7 +71,7 @@ export function getEnvSafe(key: string): string | undefined {
 	try {
 		return getEnv(key);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return undefined;
 		}
 		throw error;
@@ -85,7 +86,7 @@ export function getEnvSafe(key: string): string | undefined {
  * @returns {Record<string, string | undefined>} A snapshot of the environment variables.
  */
 export function getAllEnv(): Record<string, string | undefined> {
-	return Deno.env.toObject();
+	return DenoShim.env.toObject();
 }
 /**
  * Get a snapshot of the environment variables at invocation as a simple object of keys and values, and ignore runtime permission error.
@@ -99,7 +100,7 @@ export function getAllEnvSafe(): Record<string, string | undefined> {
 	try {
 		return getAllEnv();
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return {};
 		}
 		throw error;
@@ -120,7 +121,7 @@ export function hasEnv(key: string | RegExp): boolean {
 			return key.test(envKey);
 		});
 	}
-	return Deno.env.has(key);
+	return DenoShim.env.has(key);
 }
 /**
  * Check whether the environment variable is present, and ignore runtime permission error.
@@ -135,7 +136,7 @@ export function hasEnvSafe(key: string | RegExp): boolean {
 	try {
 		return hasEnv(key);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return false;
 		}
 		throw error;
@@ -152,7 +153,7 @@ export function hasEnvSafe(key: string | RegExp): boolean {
  * @returns {void}
  */
 export function setEnv(key: string, value: string): void {
-	return Deno.env.set(key, value);
+	return DenoShim.env.set(key, value);
 }
 /**
  * Set the environment variable, and ignore runtime permission error.
@@ -168,7 +169,7 @@ export function setEnvSafe(key: string, value: string): void {
 	try {
 		return setEnv(key, value);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return;
 		}
 		throw error;

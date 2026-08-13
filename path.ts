@@ -1,3 +1,4 @@
+import DenoShim from "./_shim/deno.ts";
 import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
@@ -61,7 +62,7 @@ export function deleteEnvPathSafe(...values: readonly (string | RegExp)[]): void
 	try {
 		return deleteEnvPath(...values);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -92,7 +93,7 @@ export function getEnvPathSafe(): string[] {
 	try {
 		return getEnvPath();
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return [];
 		}
 		throw error;
@@ -128,7 +129,7 @@ export function hasEnvPathSafe(value: string | RegExp): boolean {
 	try {
 		return hasEnvPath(value);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return false;
 		}
 		throw error;
@@ -163,7 +164,7 @@ export function insertEnvPathSafe(index: number, ...values: readonly string[]): 
 	try {
 		return insertEnvPath(index, ...values);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -196,7 +197,7 @@ export function pushEnvPathSafe(...values: readonly string[]): void {
 	try {
 		return pushEnvPath(...values);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -229,7 +230,7 @@ export function unshiftEnvPathSafe(...values: readonly string[]): void {
 	try {
 		return unshiftEnvPath(...values);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotCapable) {
+		if (error instanceof DenoShim.errors.NotCapable) {
 			return;
 		}
 		throw error;

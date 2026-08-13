@@ -4,8 +4,15 @@ import {
 	isAbsolute as isPathAbsolute,
 	join as joinPath
 } from "node:path";
+import {
+	cwd,
+	getgid,
+	getuid
+} from "node:process";
+import DenoShim from "./_shim/deno.ts";
 import { getEnvPath } from "./path.ts";
 import { getEnvPathExt } from "./pathext.ts";
+type DenoFileInfo = ReturnType<typeof DenoShim.statSync>;
 export interface GetExecutableOptions {
 	/**
 	 * Whether to include the entries in the working directory.
@@ -64,22 +71,23 @@ export interface ExecutableEntry {
  */
 export async function* getAllExecutable(options: GetExecutableOptions = {}): AsyncGenerator<ExecutableEntry> {
 	const {
-		cwd = false,
+		cwd: includeCWD = false,
 		filters = []
 	} = options;
 	const yielded: Set<string> = new Set<string>();
 	const envPathExts: string[] | null = getEnvPathExt();
 	const envPaths: string[] = getEnvPath();
-	if (typeof cwd === "string") {
-		envPaths.unshift(cwd);
-	} else if (cwd) {
-		envPaths.unshift(Deno.cwd());
+	if (typeof includeCWD === "string") {
+		envPaths.unshift(includeCWD);
+	} else if (includeCWD) {
+		envPaths.unshift(cwd());
 	}
-	for (const envPath of envPaths.filter((envPath: string): boolean => {
-		return isPathAbsolute(envPath);
-	})) {
+	for (const envPath of envPaths) {
+		if (!isPathAbsolute(envPath)) {
+			continue;
+		}
 		try {
-			for await (const { name: basename } of Deno.readDir(envPath)) {
+			for await (const { name: basename } of DenoShim.readDir(envPath)) {
 				const path: string = joinPath(envPath, basename);
 				try {
 					if (
@@ -116,9 +124,9 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 			}
 		} catch (error) {
 			if (
-				error instanceof Deno.errors.NotADirectory ||
-				error instanceof Deno.errors.NotFound ||
-				error instanceof Deno.errors.PermissionDenied
+				error instanceof DenoShim.errors.NotADirectory ||
+				error instanceof DenoShim.errors.NotFound ||
+				error instanceof DenoShim.errors.PermissionDenied
 			) {
 				continue;
 			}
@@ -143,22 +151,23 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
  */
 export function* getAllExecutableSync(options: GetExecutableOptions = {}): Generator<ExecutableEntry> {
 	const {
-		cwd = false,
+		cwd: includeCWD = false,
 		filters = []
 	} = options;
 	const yielded: Set<string> = new Set<string>();
 	const envPathExts: string[] | null = getEnvPathExt();
 	const envPaths: string[] = getEnvPath();
-	if (typeof cwd === "string") {
-		envPaths.unshift(cwd);
-	} else if (cwd) {
-		envPaths.unshift(Deno.cwd());
+	if (typeof includeCWD === "string") {
+		envPaths.unshift(includeCWD);
+	} else if (includeCWD) {
+		envPaths.unshift(cwd());
 	}
-	for (const envPath of envPaths.filter((envPath: string): boolean => {
-		return isPathAbsolute(envPath);
-	})) {
+	for (const envPath of envPaths) {
+		if (!isPathAbsolute(envPath)) {
+			continue;
+		}
 		try {
-			for (const { name: basename } of Deno.readDirSync(envPath)) {
+			for (const { name: basename } of DenoShim.readDirSync(envPath)) {
 				const path: string = joinPath(envPath, basename);
 				try {
 					if (
@@ -195,9 +204,9 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 			}
 		} catch (error) {
 			if (
-				error instanceof Deno.errors.NotADirectory ||
-				error instanceof Deno.errors.NotFound ||
-				error instanceof Deno.errors.PermissionDenied
+				error instanceof DenoShim.errors.NotADirectory ||
+				error instanceof DenoShim.errors.NotFound ||
+				error instanceof DenoShim.errors.PermissionDenied
 			) {
 				continue;
 			}
@@ -275,13 +284,13 @@ export interface IsExecutablePathOptions {
 const g = 0o010;
 const o = 0o001;
 const u = 0o100;
-function isExecutablePathInternalPOSIX(stat: Deno.FileInfo, options: IsExecutablePathOptions): boolean {
-	const ownGid: number | null = options.gid ?? Deno.gid();
-	const ownUid: number | null = options.uid ?? Deno.uid();
-	if (ownGid === null) {
+function isExecutablePathInternalPOSIX(stat: DenoFileInfo, options: IsExecutablePathOptions): boolean {
+	const ownGid: number | undefined = options.gid ?? getgid?.();
+	const ownUid: number | undefined = options.uid ?? getuid?.();
+	if (typeof ownGid === "undefined") {
 		throw new Error(`Unable to get the group ID of the process!`);
 	}
-	if (ownUid === null) {
+	if (typeof ownUid === "undefined") {
 		throw new Error(`Unable to get the user ID of the process!`);
 	}
 	const pathGid: number | null = stat.gid;
@@ -312,7 +321,7 @@ function isExecutablePathInternalWindows(path: string, pathExts: string[]): bool
 async function isExecutablePathInternal(path: string, options: IsExecutablePathOptions, pathExts?: string[] | null): Promise<boolean> {
 	const { mayNotExist = false } = options;
 	try {
-		const stat: Deno.FileInfo = await Deno.stat(path);
+		const stat: DenoFileInfo = await DenoShim.stat(path);
 		if (!stat.isFile) {
 			return false;
 		}
@@ -321,7 +330,7 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 		}
 		return isExecutablePathInternalPOSIX(stat, options);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotFound && mayNotExist) {
+		if (error instanceof DenoShim.errors.NotFound && mayNotExist) {
 			return false;
 		}
 		throw error;
@@ -330,7 +339,7 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 function isExecutablePathInternalSync(path: string, options: IsExecutablePathOptions, pathExts?: string[] | null): boolean {
 	const { mayNotExist = false } = options;
 	try {
-		const stat: Deno.FileInfo = Deno.statSync(path);
+		const stat: DenoFileInfo = DenoShim.statSync(path);
 		if (!stat.isFile) {
 			return false;
 		}
@@ -339,7 +348,7 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
 		}
 		return isExecutablePathInternalPOSIX(stat, options);
 	} catch (error) {
-		if (error instanceof Deno.errors.NotFound && mayNotExist) {
+		if (error instanceof DenoShim.errors.NotFound && mayNotExist) {
 			return false;
 		}
 		throw error;
