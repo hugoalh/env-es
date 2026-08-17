@@ -1,5 +1,4 @@
 import { delimiter } from "node:path";
-import DenoShim from "./_shim/deno.ts";
 import {
 	getEnv,
 	setEnv
@@ -73,7 +72,8 @@ export function deleteEnvDelimitationSafe(key: string, ...values: readonly (stri
 	try {
 		return deleteEnvDelimitation(key, ...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -106,7 +106,8 @@ export function getEnvDelimitationSafe(key: string): string[] {
 	try {
 		return getEnvDelimitation(key);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return [];
 		}
 		throw error;
@@ -145,7 +146,8 @@ export function insertEnvDelimitationSafe(key: string, index: number, ...values:
 	try {
 		return insertEnvDelimitation(key, index, ...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -180,7 +182,8 @@ export function pushEnvDelimitationSafe(key: string, ...values: readonly string[
 	try {
 		return pushEnvDelimitation(key, ...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -215,7 +218,8 @@ export function setEnvDelimitationSafe(key: string, values: readonly string[]): 
 	try {
 		return setEnvDelimitation(key, values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -250,7 +254,8 @@ export function unshiftEnvDelimitationSafe(key: string, ...values: readonly stri
 	try {
 		return unshiftEnvDelimitation(key, ...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;

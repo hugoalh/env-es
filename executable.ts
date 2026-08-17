@@ -18,7 +18,6 @@ import {
 	getgid,
 	getuid
 } from "node:process";
-import DenoShim from "./_shim/deno.ts";
 import { getEnvPath } from "./path.ts";
 import { getEnvPathExt } from "./pathext.ts";
 export interface GetExecutableOptions {
@@ -161,16 +160,27 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
 				}
 			}
 		} catch (error) {
-			//@ts-ignore NodeJS error code.
-			const errorCode: unknown = error?.code;
 			if (
-				error instanceof DenoShim.errors.NotADirectory ||
-				error instanceof DenoShim.errors.NotFound ||
-				error instanceof DenoShim.errors.PermissionDenied ||
-				errorCode === "EACCES" ||
-				errorCode === "ENOENT" ||
-				errorCode === "ENOTDIR" ||
-				errorCode === "ERR_ACCESS_DENIED"
+				//@ts-ignore `Deno` maybe not exist.
+				(typeof globalThis.Deno !== "undefined" && (
+					//@ts-ignore `Deno` maybe not exist.
+					error instanceof Deno.errors.NotADirectory ||
+					//@ts-ignore `Deno` maybe not exist.
+					error instanceof Deno.errors.NotFound ||
+					//@ts-ignore `Deno` maybe not exist.
+					error instanceof Deno.errors.PermissionDenied
+				)) ||
+				//@ts-ignore NodeJS error code.
+				(error instanceof Error && typeof error.code !== "undefined" && (
+					//@ts-ignore NodeJS error code.
+					error.code === "EACCES" ||
+					//@ts-ignore NodeJS error code.
+					error.code === "ENOENT" ||
+					//@ts-ignore NodeJS error code.
+					error.code === "ENOTDIR" ||
+					//@ts-ignore NodeJS error code.
+					error.code === "ERR_ACCESS_DENIED"
+				))
 			) {
 				continue;
 			}
@@ -220,16 +230,27 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
 				}
 			}
 		} catch (error) {
-			//@ts-ignore NodeJS error code.
-			const errorCode: unknown = error?.code;
 			if (
-				error instanceof DenoShim.errors.NotADirectory ||
-				error instanceof DenoShim.errors.NotFound ||
-				error instanceof DenoShim.errors.PermissionDenied ||
-				errorCode === "EACCES" ||
-				errorCode === "ENOENT" ||
-				errorCode === "ENOTDIR" ||
-				errorCode === "ERR_ACCESS_DENIED"
+				//@ts-ignore `Deno` maybe not exist.
+				(typeof globalThis.Deno !== "undefined" && (
+					//@ts-ignore `Deno` maybe not exist.
+					error instanceof Deno.errors.NotADirectory ||
+					//@ts-ignore `Deno` maybe not exist.
+					error instanceof Deno.errors.NotFound ||
+					//@ts-ignore `Deno` maybe not exist.
+					error instanceof Deno.errors.PermissionDenied
+				)) ||
+				//@ts-ignore NodeJS error code.
+				(error instanceof Error && typeof error.code !== "undefined" && (
+					//@ts-ignore NodeJS error code.
+					error.code === "EACCES" ||
+					//@ts-ignore NodeJS error code.
+					error.code === "ENOENT" ||
+					//@ts-ignore NodeJS error code.
+					error.code === "ENOTDIR" ||
+					//@ts-ignore NodeJS error code.
+					error.code === "ERR_ACCESS_DENIED"
+				))
 			) {
 				continue;
 			}
@@ -353,12 +374,12 @@ async function isExecutablePathInternal(path: string, options: IsExecutablePathO
 		}
 		return isExecutablePathInternalPOSIX(pathStat, options);
 	} catch (error) {
-		//@ts-ignore NodeJS error code.
-		const errorCode: unknown = error?.code;
-		if ((
-			error instanceof DenoShim.errors.NotFound ||
-			errorCode === "ENOENT"
-		) && mayNotExist) {
+		if (mayNotExist && (
+			//@ts-ignore `Deno` maybe not exist.
+			(typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotFound) ||
+			//@ts-ignore NodeJS error code.
+			(error instanceof Error && typeof error.code !== "undefined" && error.code === "ENOENT")
+		)) {
 			return false;
 		}
 		throw error;
@@ -376,12 +397,12 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
 		}
 		return isExecutablePathInternalPOSIX(pathStat, options);
 	} catch (error) {
-		//@ts-ignore NodeJS error code.
-		const errorCode: unknown = error?.code;
-		if ((
-			error instanceof DenoShim.errors.NotFound ||
-			errorCode === "ENOENT"
-		) && mayNotExist) {
+		if (mayNotExist && (
+			//@ts-ignore `Deno` maybe not exist.
+			(typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotFound) ||
+			//@ts-ignore NodeJS error code.
+			(error instanceof Error && typeof error.code !== "undefined" && error.code === "ENOENT")
+		)) {
 			return false;
 		}
 		throw error;

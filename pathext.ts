@@ -1,5 +1,4 @@
 import { systemName } from "jsr:@hugoalh/runtime-info@^0.4.0";
-import DenoShim from "./_shim/deno.ts";
 import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
@@ -78,7 +77,8 @@ export function deleteEnvPathExtSafe(...values: readonly string[]): void {
 	try {
 		return deleteEnvPathExt(...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -112,7 +112,8 @@ export function getEnvPathExtSafe(): string[] | null {
 	try {
 		return getEnvPathExt();
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return null;
 		}
 		throw error;
@@ -152,7 +153,8 @@ export function insertEnvPathExtSafe(index: number, ...values: readonly string[]
 	try {
 		return insertEnvPathExt(index, ...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -190,7 +192,8 @@ export function pushEnvPathExtSafe(...values: readonly string[]): void {
 	try {
 		return pushEnvPathExt(...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -223,7 +226,8 @@ export function resetEnvPathExtSafe(): void {
 	try {
 		return resetEnvPathExt();
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
@@ -261,7 +265,8 @@ export function unshiftEnvPathExtSafe(...values: readonly string[]): void {
 	try {
 		return unshiftEnvPathExt(...values);
 	} catch (error) {
-		if (error instanceof DenoShim.errors.NotCapable) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
 			return;
 		}
 		throw error;
