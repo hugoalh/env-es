@@ -1,4 +1,4 @@
-import * as esEnv from "./_es_env.ts";
+import * as compatEnv from "./_compat/env.ts";
 /**
  * Delete the environment variable.
  * 
@@ -14,7 +14,7 @@ export function deleteEnv(key: string | RegExp): void {
 		for (const envKey of Object.keys(getAllEnv())) {
 			if (key.test(envKey)) {
 				try {
-					esEnv.deleteEnv(envKey);
+					compatEnv.deleteEnv(envKey);
 				} catch (error) {
 					errors.push(error as Error);
 				}
@@ -25,7 +25,7 @@ export function deleteEnv(key: string | RegExp): void {
 		}
 		return;
 	}
-	return esEnv.deleteEnv(key);
+	return compatEnv.deleteEnv(key);
 }
 /**
  * Delete the environment variable, and ignore runtime permission error.
@@ -57,7 +57,7 @@ export function deleteEnvSafe(key: string | RegExp): void {
  * @returns {string | undefined} Value of the environment variable.
  */
 export function getEnv(key: string): string | undefined {
-	return esEnv.getEnv(key);
+	return compatEnv.getEnv(key);
 }
 /**
  * Get the value of the environment variable, and ignore runtime permission error.
@@ -88,7 +88,7 @@ export function getEnvSafe(key: string): string | undefined {
  * @returns {Record<string, string | undefined>} A snapshot of the environment variables.
  */
 export function getAllEnv(): Record<string, string | undefined> {
-	return esEnv.getAllEnv();
+	return compatEnv.getAllEnv();
 }
 /**
  * Get a snapshot of the environment variables at invocation as a simple object of keys and values, and ignore runtime permission error.
@@ -124,7 +124,7 @@ export function hasEnv(key: string | RegExp): boolean {
 			return key.test(envKey);
 		});
 	}
-	return esEnv.hasEnv(key);
+	return compatEnv.hasEnv(key);
 }
 /**
  * Check whether the environment variable is present, and ignore runtime permission error.
@@ -157,7 +157,7 @@ export function hasEnvSafe(key: string | RegExp): boolean {
  * @returns {void}
  */
 export function setEnv(key: string, value: string): void {
-	return esEnv.setEnv(key, value);
+	return compatEnv.setEnv(key, value);
 }
 /**
  * Set the environment variable, and ignore runtime permission error.
