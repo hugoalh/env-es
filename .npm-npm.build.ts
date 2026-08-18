@@ -12,9 +12,9 @@ await transform({
 	entrypointsScript: manifest.exports,
 	generateDeclarationMap: true,
 	mappings: {
-		"jsr:@hugoalh/runtime-info@^0.4.0": {
+		"jsr:@hugoalh/runtime-info@^0.5.0": {
 			name: "@hugoalh/runtime-info",
-			version: "^0.4.0"
+			version: "^0.5.0"
 		}
 	},
 	metadata: {

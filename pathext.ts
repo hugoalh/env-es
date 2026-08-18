@@ -1,4 +1,4 @@
-import { systemName } from "jsr:@hugoalh/runtime-info@^0.4.0";
+import { systemName } from "jsr:@hugoalh/runtime-info@^0.5.0";
 import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
