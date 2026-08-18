@@ -4,12 +4,12 @@
 	"version": "0.4.0",
 	"license": "MIT",
 	"exports": {
+		".": "./mod.ts",
 		"./delimitation": "./delimitation.ts",
 		"./executable": "./executable.ts",
 		"./general": "./general.ts",
 		"./path": "./path.ts",
-		"./pathext": "./pathext.ts",
-		".": "./mod.ts"
+		"./pathext": "./pathext.ts"
 	},
 	"imports": {
 	},
