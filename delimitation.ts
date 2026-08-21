@@ -16,7 +16,7 @@ export function deDuplicateEnvDelimitation(key: string): void {
 	const original: readonly string[] = getEnvDelimitation(key);
 	const result: readonly string[] = Array.from(new Set<string>(original));
 	if (result.length < original.length) {
-		return setEnvDelimitation(key, result);
+		setEnvDelimitation(key, result);
 	}
 }
 /**
@@ -58,7 +58,7 @@ export function deleteEnvDelimitation(key: string, ...values: readonly (string |
 			});
 		});
 		if (result.length < original.length) {
-			return setEnvDelimitation(key, result);
+			setEnvDelimitation(key, result);
 		}
 	}
 }
@@ -118,6 +118,48 @@ export function getEnvDelimitationSafe(key: string): string[] {
 	}
 }
 /**
+ * Check whether the value is present in the environment variable with inter-handle delimiter.
+ * 
+ * > **🛡️ Runtime Permissions**
+ * > 
+ * > - Environment Variable (Deno: `env`)
+ * @param {string} key Key of the environment variable.
+ * @param {string | RegExp} value Value. Use `string` for exact match, or use `RegExp` for pattern match.
+ * @returns {boolean} Determine result.
+ */
+export function hasEnvDelimitation(key: string, value: string | RegExp): boolean {
+	const values: readonly string[] = getEnvDelimitation(key);
+	if (value instanceof RegExp) {
+		return values.some((envValue: string): boolean => {
+			return value.test(envValue);
+		});
+	}
+	return values.some((envValue: string): boolean => {
+		return (value === envValue);
+	});
+}
+/**
+ * Check whether the value is present in the environment variable with inter-handle delimiter, and ignore runtime permission error.
+ * 
+ * > **🛡️ Runtime Permissions**
+ * > 
+ * > - Environment Variable (Deno: `env`)
+ * @param {string} key Key of the environment variable.
+ * @param {string | RegExp} value Value. Use `string` for exact match, or use `RegExp` for pattern match.
+ * @returns {boolean} Determine result.
+ */
+export function hasEnvDelimitationSafe(key: string, value: string | RegExp): boolean {
+	try {
+		return hasEnvDelimitation(key, value);
+	} catch (error) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
+			return false;
+		}
+		throw error;
+	}
+}
+/**
  * Add the value to the environment variable at the specify index of the list with inter-handle delimiter.
  * 
  * > **🛡️ Runtime Permissions**
@@ -169,7 +211,7 @@ export function insertEnvDelimitationSafe(key: string, index: number, ...values:
  */
 export function pushEnvDelimitation(key: string, ...values: readonly string[]): void {
 	if (values.length > 0) {
-		return setEnvDelimitation(key, [...getEnvDelimitation(key), ...values]);
+		setEnvDelimitation(key, [...getEnvDelimitation(key), ...values]);
 	}
 }
 /**
@@ -204,7 +246,7 @@ export function pushEnvDelimitationSafe(key: string, ...values: readonly string[
  * @returns {void}
  */
 export function setEnvDelimitation(key: string, values: readonly string[]): void {
-	return setEnv(key, values.filter((value: string): boolean => {
+	setEnv(key, values.filter((value: string): boolean => {
 		return (value.length > 0);
 	}).join(delimiter));
 }
@@ -241,7 +283,7 @@ export function setEnvDelimitationSafe(key: string, values: readonly string[]): 
  */
 export function unshiftEnvDelimitation(key: string, ...values: readonly string[]): void {
 	if (values.length > 0) {
-		return setEnvDelimitation(key, [...values, ...getEnvDelimitation(key)]);
+		setEnvDelimitation(key, [...values, ...getEnvDelimitation(key)]);
 	}
 }
 /**

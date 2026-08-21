@@ -3,17 +3,18 @@ import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
 	getEnvDelimitation,
+	hasEnvDelimitation,
 	insertEnvDelimitation,
 	pushEnvDelimitation,
 	setEnvDelimitation,
 	unshiftEnvDelimitation
 } from "./delimitation.ts";
 function assertValuesFileExtension(...values: readonly string[]): void {
-	values.forEach((value: string): void => {
+	for (const value of values) {
 		if (!value.startsWith(".")) {
 			throw new SyntaxError(`\`${value}\` is not an valid file extension!`);
 		}
-	});
+	}
 }
 /**
  * De-duplicate the values in the environment variable `PATHEXT`; Always ignore for non Windows platforms.
@@ -26,7 +27,7 @@ function assertValuesFileExtension(...values: readonly string[]): void {
  */
 export function deDuplicateEnvPathExt(): void {
 	if (systemName === "windows") {
-		return deDuplicateEnvDelimitation("PATHEXT");
+		deDuplicateEnvDelimitation("PATHEXT");
 	}
 }
 /**
@@ -62,7 +63,7 @@ export function deDuplicateEnvPathExtSafe(): void {
 export function deleteEnvPathExt(...values: readonly string[]): void {
 	assertValuesFileExtension(...values);
 	if (systemName === "windows") {
-		return deleteEnvDelimitation("PATHEXT", ...values.map((value: string): string => {
+		deleteEnvDelimitation("PATHEXT", ...values.map((value: string): string => {
 			return value.toUpperCase();
 		}));
 	}
@@ -102,7 +103,7 @@ export function getEnvPathExt(): string[] | null {
 		return getEnvDelimitation("PATHEXT");
 	}
 	return null;
-};
+}
 /**
  * Get the values of the environment variable `PATHEXT`, and ignore runtime permission error; Always return `null` for non Windows platforms.
  * 
@@ -122,7 +123,41 @@ export function getEnvPathExtSafe(): string[] | null {
 		}
 		throw error;
 	}
-};
+}
+/**
+ * Check whether the value is present in the environment variable `PATHEXT`.
+ * 
+ * > **🛡️ Runtime Permissions**
+ * > 
+ * > - Environment Variable (Deno: `env`)
+ * >   - `PATHEXT`
+ * @param {string | RegExp} value Value. Use `string` for exact match, or use `RegExp` for pattern match.
+ * @returns {boolean} Determine result.
+ */
+export function hasEnvPathExt(value: string | RegExp): boolean {
+	return hasEnvDelimitation("PATHEXT", value);
+}
+/**
+ * Check whether the value is present in the environment variable `PATHEXT`, and ignore runtime permission error.
+ * 
+ * > **🛡️ Runtime Permissions**
+ * > 
+ * > - Environment Variable (Deno: `env`)
+ * >   - `PATHEXT`
+ * @param {string | RegExp} value Value. Use `string` for exact match, or use `RegExp` for pattern match.
+ * @returns {boolean} Determine result.
+ */
+export function hasEnvPathExtSafe(value: string | RegExp): boolean {
+	try {
+		return hasEnvPathExt(value);
+	} catch (error) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
+			return false;
+		}
+		throw error;
+	}
+}
 /**
  * Add the value to the environment variable `PATHEXT` at the specify index of the list; Always ignore for non Windows platforms.
  * 
@@ -137,7 +172,7 @@ export function getEnvPathExtSafe(): string[] | null {
 export function insertEnvPathExt(index: number, ...values: readonly string[]): void {
 	assertValuesFileExtension(...values);
 	if (systemName === "windows") {
-		return insertEnvDelimitation("PATHEXT", index, ...values.map((value: string): string => {
+		insertEnvDelimitation("PATHEXT", index, ...values.map((value: string): string => {
 			return value.toUpperCase();
 		}));
 	}
@@ -177,7 +212,7 @@ export function insertEnvPathExtSafe(index: number, ...values: readonly string[]
 export function pushEnvPathExt(...values: readonly string[]): void {
 	assertValuesFileExtension(...values);
 	if (systemName === "windows") {
-		return pushEnvDelimitation("PATHEXT", ...values.map((value: string): string => {
+		pushEnvDelimitation("PATHEXT", ...values.map((value: string): string => {
 			return value.toUpperCase();
 		}));
 	}
@@ -214,7 +249,7 @@ export function pushEnvPathExtSafe(...values: readonly string[]): void {
  */
 export function resetEnvPathExt(): void {
 	if (systemName === "windows") {
-		return setEnvDelimitation("PATHEXT", [".COM", ".EXE", ".BAT", ".CMD", ".VBS", ".VBE", ".JS", ".JSE", ".WSF", ".WSH", ".MSC"]);
+		setEnvDelimitation("PATHEXT", [".COM", ".EXE", ".BAT", ".CMD", ".VBS", ".VBE", ".JS", ".JSE", ".WSF", ".WSH", ".MSC"]);
 	}
 }
 /**
@@ -250,7 +285,7 @@ export function resetEnvPathExtSafe(): void {
 export function unshiftEnvPathExt(...values: readonly string[]): void {
 	assertValuesFileExtension(...values);
 	if (systemName === "windows") {
-		return unshiftEnvDelimitation("PATHEXT", ...values.map((value: string): string => {
+		unshiftEnvDelimitation("PATHEXT", ...values.map((value: string): string => {
 			return value.toUpperCase();
 		}));
 	}

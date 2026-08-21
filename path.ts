@@ -2,6 +2,7 @@ import {
 	deDuplicateEnvDelimitation,
 	deleteEnvDelimitation,
 	getEnvDelimitation,
+	hasEnvDelimitation,
 	insertEnvDelimitation,
 	pushEnvDelimitation,
 	unshiftEnvDelimitation
@@ -115,10 +116,7 @@ export function getEnvPathSafe(): string[] {
  * @returns {boolean} Determine result.
  */
 export function hasEnvPath(value: string | RegExp): boolean {
-	const values: readonly string[] = getEnvPath();
-	return values.some((envValue: string): boolean => {
-		return ((value instanceof RegExp) ? value.test(envValue) : (value === envValue));
-	});
+	return hasEnvDelimitation("PATH", value);
 }
 /**
  * Check whether the value is present in the environment variable `PATH`, and ignore runtime permission error.
