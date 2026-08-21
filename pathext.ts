@@ -41,8 +41,12 @@ export function deDuplicateEnvPathExt(): void {
 export function deDuplicateEnvPathExtSafe(): void {
 	try {
 		return deDuplicateEnvPathExt();
-	} catch {
-		return;
+	} catch (error) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**

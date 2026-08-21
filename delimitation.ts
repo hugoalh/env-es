@@ -31,8 +31,12 @@ export function deDuplicateEnvDelimitation(key: string): void {
 export function deDuplicateEnvDelimitationSafe(key: string): void {
 	try {
 		return deDuplicateEnvDelimitation(key);
-	} catch {
-		return;
+	} catch (error) {
+		//@ts-ignore `Deno` maybe not exist.
+		if (typeof globalThis.Deno !== "undefined" && error instanceof Deno.errors.NotCapable) {
+			return;
+		}
+		throw error;
 	}
 }
 /**
