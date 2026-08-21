@@ -6,10 +6,15 @@ interface CompatEnv {
 	has(key: string): boolean;
 	set(key: string, value: string): void;
 }
-const invalidEnvKeyCharsCode: readonly number[] = [/* UNIQUE */ "=", "\0"].map((c: string): number => {
+const invalidEnvKeyCharsCode: readonly number[] = [/* UNIQUE */
+	"=",
+	"\0"
+].map((c: string): number => {
 	return c.charCodeAt(0);
 });
-const invalidEnvValueCharsCode: readonly number[] = [/* UNIQUE */ "\0"].map((c: string): number => {
+const invalidEnvValueCharsCode: readonly number[] = [/* UNIQUE */
+	"\0"
+].map((c: string): number => {
 	return c.charCodeAt(0);
 });
 function assertEnvKey(key: string): void {
