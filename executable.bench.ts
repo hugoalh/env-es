@@ -11,7 +11,7 @@ Deno.bench("Get All Async", {
 }, async () => {
 	for await (const value of getAllExecutable()) {
 		void value;
-	};
+	}
 });
 Deno.bench("Get All Sync", {
 	permissions: {
@@ -22,5 +22,5 @@ Deno.bench("Get All Sync", {
 }, () => {
 	for (const value of getAllExecutableSync()) {
 		void value;
-	};
+	}
 });

@@ -12,7 +12,7 @@ Deno.test("Get All", {
 }, async () => {
 	for await (const value of getAllExecutable()) {
 		console.log(value);
-	};
+	}
 });
 Deno.test("Get `git`", {
 	permissions: {
