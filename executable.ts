@@ -123,9 +123,9 @@ class ExecutableYielder {
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
  * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
- * > - System Info (Deno: `sys`)
- * >   - `gid` (POSIX/UNIX Platforms)
- * >   - `uid` (POSIX/UNIX Platforms)
+ * > - System Info (Deno: `sys`) (POSIX/UNIX Platforms)
+ * >   - `gid`
+ * >   - `uid`
  * @param {GetExecutableOptions} [options={}] Options.
  * @returns {AsyncGenerator<ExecutableEntry>} An async iterable iterator that yield the information of the executables.
  */
@@ -197,9 +197,9 @@ export async function* getAllExecutable(options: GetExecutableOptions = {}): Asy
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
  * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
- * > - System Info (Deno: `sys`)
- * >   - `gid` (POSIX/UNIX Platforms)
- * >   - `uid` (POSIX/UNIX Platforms)
+ * > - System Info (Deno: `sys`) (POSIX/UNIX Platforms)
+ * >   - `gid`
+ * >   - `uid`
  * @param {GetExecutableOptions} [options={}] Options.
  * @returns {Generator<ExecutableEntry>} An iterable iterator that yield the information of the executables.
  */
@@ -267,9 +267,9 @@ export function* getAllExecutableSync(options: GetExecutableOptions = {}): Gener
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
  * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
- * > - System Info (Deno: `sys`)
- * >   - `gid` (POSIX/UNIX Platforms)
- * >   - `uid` (POSIX/UNIX Platforms)
+ * > - System Info (Deno: `sys`) (POSIX/UNIX Platforms)
+ * >   - `gid`
+ * >   - `uid`
  * @param {Omit<GetExecutableOptions, "filter">} [options={}] Options.
  * @returns {Promise<ExecutableEntry | undefined>} The information of the executable.
  */
@@ -291,9 +291,9 @@ export async function getExecutable(specifier: string, options: Omit<GetExecutab
  * >   - `PATH`
  * >   - `PATHEXT` (Windows Platforms)
  * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
- * > - System Info (Deno: `sys`)
- * >   - `gid` (POSIX/UNIX Platforms)
- * >   - `uid` (POSIX/UNIX Platforms)
+ * > - System Info (Deno: `sys`) (POSIX/UNIX Platforms)
+ * >   - `gid`
+ * >   - `uid`
  * @param {Omit<GetExecutableOptions, "filter">} [options={}] Options.
  * @returns {ExecutableEntry | undefined} The information of the executable.
  */
@@ -416,9 +416,9 @@ function isExecutablePathInternalSync(path: string, options: IsExecutablePathOpt
  * > - Environment Variable (Deno: `env`)
  * >   - `PATHEXT` (Windows Platforms)
  * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
- * > - System Info (Deno: `sys`)
- * >   - `gid` (POSIX/UNIX Platforms)
- * >   - `uid` (POSIX/UNIX Platforms)
+ * > - System Info (Deno: `sys`) (POSIX/UNIX Platforms)
+ * >   - `gid`
+ * >   - `uid`
  * @param {string} path Path.
  * @param {IsExecutablePathOptions} [options={}] Options.
  * @returns {Promise<boolean>} Determine result.
@@ -434,9 +434,9 @@ export function isExecutablePath(path: string, options: IsExecutablePathOptions 
  * > - Environment Variable (Deno: `env`)
  * >   - `PATHEXT` (Windows Platforms)
  * > - File System - Read (Deno: `read`; NodeJS: `fs-read`)
- * > - System Info (Deno: `sys`)
- * >   - `gid` (POSIX/UNIX Platforms)
- * >   - `uid` (POSIX/UNIX Platforms)
+ * > - System Info (Deno: `sys`) (POSIX/UNIX Platforms)
+ * >   - `gid`
+ * >   - `uid`
  * @param {string} path Path.
  * @param {IsExecutablePathOptions} [options={}] Options.
  * @returns {boolean} Determine result.
