@@ -21,12 +21,10 @@ Any runtime which support ECMAScript should able to use this; These runtimes are
 ## 🛡️ Runtime Permissions
 
 - Environment Variable (Deno: `env`)
-  - `PATH` (Optional)
-  - `PATHEXT` (Optional, Windows Platforms)
 - File System - Read (Deno: `read`; NodeJS: `fs-read`) (Optional)
-- System Info (Deno: `sys`)
-  - `gid` (Optional, POSIX/UNIX Platforms)
-  - `uid` (Optional, POSIX/UNIX Platforms)
+- System Info (Deno: `sys`) (Optional, POSIX/UNIX Platforms)
+  - `gid`
+  - `uid`
 
 ## #️⃣ Entrypoints
 
