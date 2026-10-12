@@ -11,9 +11,9 @@ await transform({
 	//@ts-ignore Lazy type.
 	entrypointsScript: manifest.exports,
 	mappings: {
-		"jsr:@hugoalh/runtime-info@^0.5.0": {
+		"jsr:@hugoalh/runtime-info@^0.6.0": {
 			name: "@hugoalh/runtime-info",
-			version: "^0.5.0"
+			version: "^0.6.0"
 		}
 	},
 	metadata: {
